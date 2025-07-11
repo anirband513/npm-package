@@ -33,13 +33,66 @@ export interface TemplateData {
   hasStorybook: boolean;
   isTypeScript: boolean;
   packageManager: string;
-  // Style objects for JSX
+  // Style objects for JSX - Home page
   headerTitleStyle: string;
+  headerStyle: string;
+  headerContentStyle: string;
+  menuStyle: string;
   contentStyle: string;
   footerStyle: string;
   containerStyle: string;
   cardStyle: string;
   cardExampleStyle: string;
+  heroCardStyle: string;
+  heroContentStyle: string;
+  heroTitleStyle: string;
+  heroParagraphStyle: string;
+  sectionStyle: string;
+  sectionTitleStyle: string;
+  statisticValueStyle: string;
+  fullWidthStyle: string;
+  tagContainerStyle: string;
+  techItemStyle: string;
+  // Progress styles for Tailwind
+  progressStyle75: string;
+  progressStyle100: string;
+  // Plain styles for non-framework designs
+  plainContainerStyle: string;
+  plainHeroStyle: string;
+  plainH1Style: string;
+  plainPStyle: string;
+  plainButtonContainerStyle: string;
+  plainButtonStyle: string;
+  plainLinkStyle: string;
+  plainGridStyle: string;
+  plainCardStyle: string;
+  plainCounterStyle: string;
+  plainUserStyle: string;
+  // About page styles
+  aboutHeroStyle: string;
+  aboutHeroContentStyle: string;
+  aboutTitleStyle: string;
+  aboutParagraphStyle: string;
+  featureIconStyle: string;
+  featureTitleStyle: string;
+  featureDescStyle: string;
+  // Form styles
+  formStyle: string;
+  formGroupStyle: string;
+  inputStyle: string;
+  textareaStyle: string;
+  errorStyle: string;
+  // Plain About styles
+  plainAboutContainerStyle: string;
+  plainAboutHeroStyle: string;
+  plainAboutH1Style: string;
+  plainAboutPStyle: string;
+  plainAboutButtonContainerStyle: string;
+  plainAboutButtonStyle: string;
+  plainAboutButton2Style: string;
+  plainAboutGridStyle: string;
+  plainAboutCardStyle: string;
+  plainAboutIconStyle: string;
   // Ant Design theme config
   antdThemeConfig: string;
 }
@@ -158,13 +211,66 @@ export function generateTemplateData(config: ProjectConfig): TemplateData {
     hasStorybook: config.features.includes('storybook'),
     isTypeScript: config.language === 'typescript',
     packageManager: config.packageManager,
-    // Style objects for JSX
+    // Style objects for JSX - Home page
     headerTitleStyle: "{{ color: 'white', margin: 0 }}",
+    headerStyle: "{{ background: 'linear-gradient(135deg, #1677ff, #69c0ff)', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}",
+    headerContentStyle: "{{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}",
+    menuStyle: "{{ backgroundColor: 'transparent', border: 'none', flex: 1, justifyContent: 'flex-end' }}",
     contentStyle: "{{ padding: '50px' }}",
     footerStyle: "{{ textAlign: 'center' }}",
-    containerStyle: "{{ maxWidth: 800, margin: '0 auto' }}",
+    containerStyle: "{{ maxWidth: 1200, margin: '0 auto', padding: '24px' }}",
     cardStyle: "{{ marginBottom: 24 }}",
     cardExampleStyle: "{{ marginBottom: 24 }}",
+    heroCardStyle: "{{ marginBottom: 32, background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', border: 'none' }}",
+    heroContentStyle: "{{ textAlign: 'center', padding: '40px 20px' }}",
+    heroTitleStyle: "{{ color: 'white', margin: '0 0 16px 0' }}",
+    heroParagraphStyle: "{{ color: 'rgba(255, 255, 255, 0.9)', fontSize: '18px', marginBottom: '32px' }}",
+    sectionStyle: "{{ marginTop: 32 }}",
+    sectionTitleStyle: "{{ marginBottom: 24, textAlign: 'center' }}",
+    statisticValueStyle: "{{ color: '#1677ff' }}",
+    fullWidthStyle: "{{ width: '100%' }}",
+    tagContainerStyle: "{{ marginTop: 8 }}",
+    techItemStyle: "{{ textAlign: 'center', padding: '16px' }}",
+    // Progress styles for Tailwind
+    progressStyle75: "{{ width: '75%' }}",
+    progressStyle100: "{{ width: '100%' }}",
+    // Plain styles for non-framework designs
+    plainContainerStyle: "{{ maxWidth: 1200, margin: '0 auto', padding: '24px' }}",
+    plainHeroStyle: "{{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', color: 'white', padding: '40px', borderRadius: '8px', marginBottom: '32px', textAlign: 'center' }}",
+    plainH1Style: "{{ fontSize: '2.5rem', marginBottom: '16px' }}",
+    plainPStyle: "{{ fontSize: '1.2rem', marginBottom: '24px' }}",
+    plainButtonContainerStyle: "{{ display: 'flex', gap: '16px', justifyContent: 'center' }}",
+    plainButtonStyle: "{{ padding: '12px 24px', backgroundColor: '#1677ff', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' }}",
+    plainLinkStyle: "{{ padding: '12px 24px', backgroundColor: 'rgba(255,255,255,0.1)', color: 'white', textDecoration: 'none', borderRadius: '6px' }}",
+    plainGridStyle: "{{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px', marginTop: '32px' }}",
+    plainCardStyle: "{{ backgroundColor: 'white', padding: '24px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}",
+    plainCounterStyle: "{{ fontSize: '2rem', fontWeight: 'bold', color: '#1677ff', margin: '16px 0' }}",
+    plainUserStyle: "{{ backgroundColor: '#f5f5f5', padding: '12px', borderRadius: '4px', marginBottom: '8px' }}",
+    // About page styles
+    aboutHeroStyle: "{{ marginBottom: 32, background: 'linear-gradient(135deg, #764ba2 0%, #667eea 100%)', border: 'none' }}",
+    aboutHeroContentStyle: "{{ textAlign: 'center', padding: '40px 20px' }}",
+    aboutTitleStyle: "{{ color: 'white', margin: '0 0 16px 0' }}",
+    aboutParagraphStyle: "{{ color: 'rgba(255, 255, 255, 0.9)', fontSize: '18px', marginBottom: '32px' }}",
+    featureIconStyle: "{{ fontSize: '32px', textAlign: 'center', marginBottom: '12px' }}",
+    featureTitleStyle: "{{ marginBottom: '8px', textAlign: 'center' }}",
+    featureDescStyle: "{{ marginBottom: 0, textAlign: 'center', fontSize: '14px' }}",
+    // Form styles
+    formStyle: "{{ width: '100%' }}",
+    formGroupStyle: "{{ marginBottom: '16px' }}",
+    inputStyle: "{{ width: '100%', padding: '8px 12px', border: '1px solid #d9d9d9', borderRadius: '4px' }}",
+    textareaStyle: "{{ width: '100%', padding: '8px 12px', border: '1px solid #d9d9d9', borderRadius: '4px', minHeight: '100px' }}",
+    errorStyle: "{{ color: '#ff4d4f', fontSize: '12px' }}",
+    // Plain About styles
+    plainAboutContainerStyle: "{{ maxWidth: 1200, margin: '0 auto', padding: '24px' }}",
+    plainAboutHeroStyle: "{{ background: 'linear-gradient(135deg, #764ba2 0%, #667eea 100%)', color: 'white', padding: '40px', borderRadius: '8px', marginBottom: '32px', textAlign: 'center' }}",
+    plainAboutH1Style: "{{ fontSize: '2.5rem', marginBottom: '16px' }}",
+    plainAboutPStyle: "{{ fontSize: '1.2rem', marginBottom: '24px' }}",
+    plainAboutButtonContainerStyle: "{{ display: 'flex', gap: '16px', justifyContent: 'center' }}",
+    plainAboutButtonStyle: "{{ padding: '12px 24px', backgroundColor: '#1677ff', color: 'white', textDecoration: 'none', borderRadius: '6px' }}",
+    plainAboutButton2Style: "{{ padding: '12px 24px', backgroundColor: 'rgba(255,255,255,0.1)', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' }}",
+    plainAboutGridStyle: "{{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px', marginTop: '32px' }}",
+    plainAboutCardStyle: "{{ backgroundColor: 'white', padding: '24px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}",
+    plainAboutIconStyle: "{{ fontSize: '2rem', marginBottom: '16px' }}",
     // Ant Design theme config
     antdThemeConfig: `{{
         algorithm: theme.defaultAlgorithm,

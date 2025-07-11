@@ -1,10 +1,10 @@
 import { useState } from 'react'
 {{#hasAntd}}
-import { Layout, Button, Card, Space, Typography } from 'antd'
-import { GithubOutlined, RocketOutlined } from '@ant-design/icons'
+import { Layout, Button, Space, Typography, Menu } from 'antd'
+import { HomeOutlined, InfoCircleOutlined, RocketOutlined, GithubOutlined } from '@ant-design/icons'
 {{/hasAntd}}
 {{#hasRouter}}
-import { Routes, Route, Link } from 'react-router-dom'
+import { Routes, Route, Link, useLocation } from 'react-router-dom'
 import Home from './pages/Home'
 import About from './pages/About'
 {{/hasRouter}}
@@ -15,13 +15,16 @@ import { increment, decrement } from './store/counterSlice'
 {{#hasFramerMotion}}
 import { motion } from 'framer-motion'
 {{/hasFramerMotion}}
-{{#hasTailwind}}
-import './App.css'
-{{/hasTailwind}}
+{{#hasScss}}
+import './index.scss'
+{{/hasScss}}
+{{^hasScss}}
+import './index.css'
+{{/hasScss}}
 
 {{#hasAntd}}
 const { Header, Content, Footer } = Layout
-const { Title, Paragraph } = Typography
+const { Title } = Typography
 {{/hasAntd}}
 
 {{#isTypeScript}}
@@ -35,19 +38,33 @@ function App() {
   const reduxCount = useSelector((state: any) => state.counter.value)
   const dispatch = useDispatch()
   {{/hasRedux}}
+  {{#hasRouter}}
+  const location = useLocation()
+  {{/hasRouter}}
 
   {{#hasRouter}}
   return (
     {{#hasAntd}}
     <Layout className="custom-app">
-      <Header className="custom-header flex items-center justify-between">
-        <Title level={3} style={{{headerTitleStyle}}}>
-          {{projectName}}
-        </Title>
-        <Space>
-          <Link to="/">Home</Link>
-          <Link to="/about">About</Link>
-        </Space>
+      <Header className="custom-header" style={{{headerStyle}}}>
+        <div style={{{headerContentStyle}}}>
+          <Title level={3} style={{{headerTitleStyle}}}>
+            <RocketOutlined /> {{projectName}}
+          </Title>
+          <Menu
+            theme="dark"
+            mode="horizontal"
+            selectedKeys={[location.pathname]}
+            style={{{menuStyle}}}
+          >
+            <Menu.Item key="/" icon={<HomeOutlined />}>
+              <Link to="/">Home</Link>
+            </Menu.Item>
+            <Menu.Item key="/about" icon={<InfoCircleOutlined />}>
+              <Link to="/about">About</Link>
+            </Menu.Item>
+          </Menu>
+        </div>
       </Header>
       <Content className="custom-content" style={{{contentStyle}}}>
         <Routes>

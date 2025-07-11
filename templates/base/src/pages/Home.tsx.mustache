@@ -1,39 +1,530 @@
 {{#hasRouter}}
 {{#hasAntd}}
-import { Card, Typography, Space, Button } from 'antd'
-import { HomeOutlined } from '@ant-design/icons'
+import { Card, Typography, Space, Button, Row, Col, Statistic, Progress, Tag, Divider, Alert } from 'antd'
+import { HomeOutlined, RocketOutlined, StarOutlined, TrophyOutlined, HeartOutlined, ThunderboltOutlined } from '@ant-design/icons'
 {{/hasAntd}}
+{{#hasRedux}}
+import { useSelector, useDispatch } from 'react-redux'
+import { increment, decrement, reset } from '../store/counterSlice'
+{{/hasRedux}}
+{{#hasAxios}}
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+{{/hasAxios}}
+{{^hasAxios}}
+import { useState } from 'react'
+{{/hasAxios}}
+{{#hasRouter}}
+import { Link } from 'react-router-dom'
+{{/hasRouter}}
 
 {{#hasAntd}}
-const { Title, Paragraph } = Typography
+const { Title, Paragraph, Text } = Typography
 {{/hasAntd}}
 
 {{#isTypeScript}}
+{{#hasAxios}}
+interface User {
+  id: number
+  name: string
+  email: string
+}
+{{/hasAxios}}
+
 function Home(): JSX.Element {
 {{/isTypeScript}}
 {{^isTypeScript}}
 function Home() {
 {{/isTypeScript}}
+  {{#hasRedux}}
+  const count = useSelector((state{{#isTypeScript}}: any{{/isTypeScript}}) => state.counter.value)
+  const dispatch = useDispatch()
+  {{/hasRedux}}
+  {{^hasRedux}}
+  const [count, setCount] = useState(0)
+  {{/hasRedux}}
+  
+  {{#hasAxios}}
+  const [users, setUsers] = useState{{#isTypeScript}}<User[]>{{/isTypeScript}}([])
+  const [loading, setLoading] = useState(false)
+  
+  const fetchUsers = async () => {
+    setLoading(true)
+    try {
+      const response = await axios.get('https://jsonplaceholder.typicode.com/users')
+      setUsers(response.data.slice(0, 3)) // Get first 3 users
+    } catch (error) {
+      console.error('Error fetching users:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+  
+  useEffect(() => {
+    fetchUsers()
+  }, [])
+  {{/hasAxios}}
+
   return (
     {{#hasAntd}}
     <div className="fade-in" style={{{containerStyle}}}>
-      <Card className="custom-card" title={<><HomeOutlined /> Home</>}>
-        <Title level={2}>Welcome to {{projectName}}</Title>
-        <Paragraph>
-          This is the home page of your new React application. Start building something amazing!
-        </Paragraph>
-        <Space>
-          <Button type="primary">Get Started</Button>
-          <Button>Learn More</Button>
-        </Space>
+      {/* Hero Section */}
+      <Card className="custom-card hero-card" style={{{heroCardStyle}}}>
+        <div style={{{heroContentStyle}}}>
+          <Title level={1} style={{{heroTitleStyle}}}>
+            <RocketOutlined /> Welcome to {{projectName}}
+          </Title>
+          <Paragraph style={{{heroParagraphStyle}}}>
+            A modern React application built with cutting-edge technologies. 
+            Explore the features below to see what's possible!
+          </Paragraph>
+          <Space size="large">
+            <Button type="primary" size="large" icon={<StarOutlined />}>
+              Get Started
+            </Button>
+            {{#hasRouter}}
+            <Link to="/about">
+              <Button size="large">Learn More</Button>
+            </Link>
+            {{/hasRouter}}
+          </Space>
+        </div>
       </Card>
+
+      {/* Features Showcase */}
+      <Row gutter={[24, 24]} style={{{sectionStyle}}}>
+        <Col span={24}>
+          <Title level={2} style={{{sectionTitleStyle}}}>
+            <ThunderboltOutlined /> Features Showcase
+          </Title>
+        </Col>
+        
+        {{#hasRedux}}
+        {/* Redux State Management Demo */}
+        <Col xs={24} md={12} lg={8}>
+          <Card className="custom-card feature-card" title="Redux State Management">
+            <Statistic
+              title="Counter Value"
+              value={count}
+              prefix={<TrophyOutlined />}
+              valueStyle={{{statisticValueStyle}}}
+            />
+            <Divider />
+            <Space>
+              <Button type="primary" onClick={() => dispatch(increment())}>
+                +1
+              </Button>
+              <Button onClick={() => dispatch(decrement())}>
+                -1
+              </Button>
+              <Button danger onClick={() => dispatch(reset())}>
+                Reset
+              </Button>
+            </Space>
+          </Card>
+        </Col>
+        {{/hasRedux}}
+        {{^hasRedux}}
+        {/* Local State Demo */}
+        <Col xs={24} md={12} lg={8}>
+          <Card className="custom-card feature-card" title="Local State Management">
+            <Statistic
+              title="Counter Value"
+              value={count}
+              prefix={<TrophyOutlined />}
+              valueStyle={{{statisticValueStyle}}}
+            />
+            <Divider />
+            <Space>
+              <Button type="primary" onClick={() => setCount(count + 1)}>
+                +1
+              </Button>
+              <Button onClick={() => setCount(count - 1)}>
+                -1
+              </Button>
+              <Button danger onClick={() => setCount(0)}>
+                Reset
+              </Button>
+            </Space>
+          </Card>
+        </Col>
+        {{/hasRedux}}
+
+        {/* Design System Demo */}
+        <Col xs={24} md={12} lg={8}>
+          <Card className="custom-card feature-card" title="Design System">
+            <Space direction="vertical" style={{{fullWidthStyle}}}>
+              <div>
+                <Text strong>Progress Indicators:</Text>
+                <Progress percent={75} status="active" />
+                <Progress percent={100} status="success" />
+              </div>
+              <div>
+                <Text strong>Status Tags:</Text>
+                <div style={{{tagContainerStyle}}}>
+                  <Tag color="success">Active</Tag>
+                  <Tag color="processing">Processing</Tag>
+                  <Tag color="warning">Warning</Tag>
+                  <Tag color="error">Error</Tag>
+                </div>
+              </div>
+            </Space>
+          </Card>
+        </Col>
+
+        {{#hasAxios}}
+        {/* API Integration Demo */}
+        <Col xs={24} md={12} lg={8}>
+          <Card className="custom-card feature-card" title="API Integration" loading={loading}>
+            <Space direction="vertical" style={{{fullWidthStyle}}}>
+              <Text strong>Sample Users from API:</Text>
+              {users.map(user => (
+                <Card key={user.id} size="small" type="inner">
+                  <Text strong>{user.name}</Text>
+                  <br />
+                  <Text type="secondary">{user.email}</Text>
+                </Card>
+              ))}
+              <Button onClick={fetchUsers} loading={loading}>
+                Refresh Data
+              </Button>
+            </Space>
+          </Card>
+        </Col>
+        {{/hasAxios}}
+      </Row>
+
+      {/* Technology Stack */}
+      <Row gutter={[24, 24]} style={{{sectionStyle}}}>
+        <Col span={24}>
+          <Title level={2} style={{{sectionTitleStyle}}}>
+            <HeartOutlined /> Technology Stack
+          </Title>
+        </Col>
+        <Col span={24}>
+          <Card className="custom-card">
+            <Row gutter={[16, 16]}>
+              <Col xs={12} sm={8} md={6} lg={4}>
+                <div style={{{techItemStyle}}}>
+                  <Text strong>React 18</Text>
+                  <br />
+                  <Text type="secondary">UI Library</Text>
+                </div>
+              </Col>
+              <Col xs={12} sm={8} md={6} lg={4}>
+                <div style={{{techItemStyle}}}>
+                  <Text strong>TypeScript</Text>
+                  <br />
+                  <Text type="secondary">Language</Text>
+                </div>
+              </Col>
+              <Col xs={12} sm={8} md={6} lg={4}>
+                <div style={{{techItemStyle}}}>
+                  <Text strong>Vite</Text>
+                  <br />
+                  <Text type="secondary">Build Tool</Text>
+                </div>
+              </Col>
+              {{#hasAntd}}
+              <Col xs={12} sm={8} md={6} lg={4}>
+                <div style={{{techItemStyle}}}>
+                  <Text strong>Ant Design</Text>
+                  <br />
+                  <Text type="secondary">UI Framework</Text>
+                </div>
+              </Col>
+              {{/hasAntd}}
+              {{#hasScss}}
+              <Col xs={12} sm={8} md={6} lg={4}>
+                <div style={{{techItemStyle}}}>
+                  <Text strong>SCSS</Text>
+                  <br />
+                  <Text type="secondary">Styling</Text>
+                </div>
+              </Col>
+              {{/hasScss}}
+              {{#hasRedux}}
+              <Col xs={12} sm={8} md={6} lg={4}>
+                <div style={{{techItemStyle}}}>
+                  <Text strong>Redux</Text>
+                  <br />
+                  <Text type="secondary">State Mgmt</Text>
+                </div>
+              </Col>
+              {{/hasRedux}}
+              {{#hasRouter}}
+              <Col xs={12} sm={8} md={6} lg={4}>
+                <div style={{{techItemStyle}}}>
+                  <Text strong>React Router</Text>
+                  <br />
+                  <Text type="secondary">Routing</Text>
+                </div>
+              </Col>
+              {{/hasRouter}}
+              {{#hasAxios}}
+              <Col xs={12} sm={8} md={6} lg={4}>
+                <div style={{{techItemStyle}}}>
+                  <Text strong>Axios</Text>
+                  <br />
+                  <Text type="secondary">HTTP Client</Text>
+                </div>
+              </Col>
+              {{/hasAxios}}
+            </Row>
+          </Card>
+        </Col>
+      </Row>
+
+      {/* Call to Action */}
+      <Row style={{{sectionStyle}}}>
+        <Col span={24}>
+          <Alert
+            message="Ready to build something amazing?"
+            description="You have all the tools you need to create a modern, scalable React application. Start by exploring the code and customizing it to your needs!"
+            type="success"
+            showIcon
+            action={
+              <Space>
+                {{#hasRouter}}
+                <Link to="/about">
+                  <Button size="small">About</Button>
+                </Link>
+                {{/hasRouter}}
+                <Button size="small" type="primary">
+                  Start Building
+                </Button>
+              </Space>
+            }
+          />
+        </Col>
+      </Row>
     </div>
     {{/hasAntd}}
     {{^hasAntd}}
-    <div>
-      <h1>Home</h1>
-      <p>Welcome to {{projectName}}</p>
+    {{#hasTailwind}}
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+      {/* Hero Section */}
+      <div className="max-w-4xl mx-auto">
+        <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            🚀 Welcome to {{projectName}}
+          </h1>
+          <p className="text-xl text-gray-600 mb-6">
+            A modern React application built with cutting-edge technologies. 
+            Explore the features below to see what's possible!
+          </p>
+          <div className="flex gap-4">
+            <button className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+              Get Started
+            </button>
+            {{#hasRouter}}
+            <Link to="/about" className="bg-gray-200 text-gray-800 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors">
+              Learn More
+            </Link>
+            {{/hasRouter}}
+          </div>
+        </div>
+
+        {/* Features Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          {{#hasRedux}}
+          {/* Redux Counter */}
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h3 className="text-xl font-semibold mb-4">Redux State Management</h3>
+            <div className="text-3xl font-bold text-blue-600 mb-4">{count}</div>
+            <div className="flex gap-2">
+              <button 
+                onClick={() => dispatch(increment())}
+                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+              >
+                +1
+              </button>
+              <button 
+                onClick={() => dispatch(decrement())}
+                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+              >
+                -1
+              </button>
+              <button 
+                onClick={() => dispatch(reset())}
+                className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+              >
+                Reset
+              </button>
+            </div>
+          </div>
+          {{/hasRedux}}
+          {{^hasRedux}}
+          {/* Local State Counter */}
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h3 className="text-xl font-semibold mb-4">Local State Management</h3>
+            <div className="text-3xl font-bold text-blue-600 mb-4">{count}</div>
+            <div className="flex gap-2">
+              <button 
+                onClick={() => setCount(count + 1)}
+                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+              >
+                +1
+              </button>
+              <button 
+                onClick={() => setCount(count - 1)}
+                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+              >
+                -1
+              </button>
+              <button 
+                onClick={() => setCount(0)}
+                className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+              >
+                Reset
+              </button>
+            </div>
+          </div>
+          {{/hasRedux}}
+
+          {/* Tailwind Showcase */}
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h3 className="text-xl font-semibold mb-4">Tailwind CSS</h3>
+            <div className="space-y-3">
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="bg-blue-600 h-2 rounded-full" style={{{progressStyle75}}}></div>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="bg-green-600 h-2 rounded-full" style={{{progressStyle100}}}></div>
+              </div>
+              <div className="flex gap-2">
+                <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-sm">Active</span>
+                <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">Processing</span>
+                <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-sm">Warning</span>
+              </div>
+            </div>
+          </div>
+
+          {{#hasAxios}}
+          {/* API Integration */}
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h3 className="text-xl font-semibold mb-4">API Integration</h3>
+            <div className="space-y-2">
+              {users.map(user => (
+                <div key={user.id} className="bg-gray-50 p-3 rounded">
+                  <div className="font-medium">{user.name}</div>
+                  <div className="text-sm text-gray-600">{user.email}</div>
+                </div>
+              ))}
+              <button 
+                onClick={fetchUsers}
+                disabled={loading}
+                className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 disabled:opacity-50"
+              >
+                {loading ? 'Loading...' : 'Refresh Data'}
+              </button>
+            </div>
+          </div>
+          {{/hasAxios}}
+        </div>
+
+        {/* Technology Stack */}
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <h2 className="text-2xl font-bold mb-4">Technology Stack</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="text-center">
+              <div className="font-semibold">React 18</div>
+              <div className="text-sm text-gray-600">UI Library</div>
+            </div>
+            <div className="text-center">
+              <div className="font-semibold">TypeScript</div>
+              <div className="text-sm text-gray-600">Language</div>
+            </div>
+            <div className="text-center">
+              <div className="font-semibold">Vite</div>
+              <div className="text-sm text-gray-600">Build Tool</div>
+            </div>
+            <div className="text-center">
+              <div className="font-semibold">Tailwind</div>
+              <div className="text-sm text-gray-600">CSS Framework</div>
+            </div>
+            {{#hasRedux}}
+            <div className="text-center">
+              <div className="font-semibold">Redux</div>
+              <div className="text-sm text-gray-600">State Mgmt</div>
+            </div>
+            {{/hasRedux}}
+            {{#hasRouter}}
+            <div className="text-center">
+              <div className="font-semibold">React Router</div>
+              <div className="text-sm text-gray-600">Routing</div>
+            </div>
+            {{/hasRouter}}
+            {{#hasAxios}}
+            <div className="text-center">
+              <div className="font-semibold">Axios</div>
+              <div className="text-sm text-gray-600">HTTP Client</div>
+            </div>
+            {{/hasAxios}}
+          </div>
+        </div>
+      </div>
     </div>
+    {{/hasTailwind}}
+    {{^hasTailwind}}
+    <div style={{{plainContainerStyle}}}>
+      <div style={{{plainHeroStyle}}}>
+        <h1 style={{{plainH1Style}}}>🚀 Welcome to {{projectName}}</h1>
+        <p style={{{plainPStyle}}}>
+          A modern React application built with cutting-edge technologies. 
+          Explore the features below to see what's possible!
+        </p>
+        <div style={{{plainButtonContainerStyle}}}>
+          <button style={{{plainButtonStyle}}}>Get Started</button>
+          {{#hasRouter}}
+          <Link to="/about" style={{{plainLinkStyle}}}>Learn More</Link>
+          {{/hasRouter}}
+        </div>
+      </div>
+
+      <div style={{{plainGridStyle}}}>
+        {{#hasRedux}}
+        <div style={{{plainCardStyle}}}>
+          <h3>Redux State Management</h3>
+          <div style={{{plainCounterStyle}}}>{count}</div>
+          <div>
+            <button onClick={() => dispatch(increment())}>+1</button>
+            <button onClick={() => dispatch(decrement())}>-1</button>
+            <button onClick={() => dispatch(reset())}>Reset</button>
+          </div>
+        </div>
+        {{/hasRedux}}
+        {{^hasRedux}}
+        <div style={{{plainCardStyle}}}>
+          <h3>Local State Management</h3>
+          <div style={{{plainCounterStyle}}}>{count}</div>
+          <div>
+            <button onClick={() => setCount(count + 1)}>+1</button>
+            <button onClick={() => setCount(count - 1)}>-1</button>
+            <button onClick={() => setCount(0)}>Reset</button>
+          </div>
+        </div>
+        {{/hasRedux}}
+
+        {{#hasAxios}}
+        <div style={{{plainCardStyle}}}>
+          <h3>API Integration</h3>
+          <div>
+            {users.map(user => (
+              <div key={user.id} style={{{plainUserStyle}}}>
+                <strong>{user.name}</strong><br/>
+                <span>{user.email}</span>
+              </div>
+            ))}
+            <button onClick={fetchUsers} disabled={loading}>
+              {loading ? 'Loading...' : 'Refresh Data'}
+            </button>
+          </div>
+        </div>
+        {{/hasAxios}}
+      </div>
+    </div>
+    {{/hasTailwind}}
     {{/hasAntd}}
   )
 }

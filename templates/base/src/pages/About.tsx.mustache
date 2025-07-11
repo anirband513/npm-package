@@ -1,11 +1,23 @@
 {{#hasRouter}}
 {{#hasAntd}}
-import { Card, Typography, List } from 'antd'
-import { InfoCircleOutlined } from '@ant-design/icons'
+import { Card, Typography, List, Row, Col, Timeline, Descriptions, Badge, Space, Button } from 'antd'
+import { InfoCircleOutlined, RocketOutlined, CodeOutlined, TeamOutlined, HeartOutlined, GithubOutlined } from '@ant-design/icons'
 {{/hasAntd}}
+{{#hasRouter}}
+import { Link } from 'react-router-dom'
+{{/hasRouter}}
+{{#hasReactHookForm}}
+import { useForm } from 'react-hook-form'
+{{/hasReactHookForm}}
+{{#hasFramerMotion}}
+import { motion } from 'framer-motion'
+{{/hasFramerMotion}}
+{{#hasDayjs}}
+import dayjs from 'dayjs'
+{{/hasDayjs}}
 
 {{#hasAntd}}
-const { Title, Paragraph } = Typography
+const { Title, Paragraph, Text } = Typography
 {{/hasAntd}}
 
 {{#isTypeScript}}
@@ -15,46 +27,299 @@ function About(): JSX.Element {
 function About() {
 {{/isTypeScript}}
   const features = [
-    '⚡️ Vite for fast development',
-    '⚛️ React 18 with modern hooks',
-    {{#isTypeScript}}'🔷 TypeScript for better developer experience',{{/isTypeScript}}
-    {{#hasAntd}}'🎨 Ant Design for beautiful UI components',{{/hasAntd}}
-    {{#hasTailwind}}'🎨 Tailwind CSS for utility-first styling',{{/hasTailwind}}
-    {{#hasRedux}}'🔄 Redux Toolkit for state management',{{/hasRedux}}
-    {{#hasRouter}}'🧭 React Router for navigation',{{/hasRouter}}
-    {{#hasAxios}}'🌐 Axios for HTTP requests',{{/hasAxios}}
+    { icon: '⚡️', title: 'Vite', description: 'Lightning-fast development server and build tool' },
+    { icon: '⚛️', title: 'React 18', description: 'Latest React with concurrent features and hooks' },
+    {{#isTypeScript}}{ icon: '🔷', title: 'TypeScript', description: 'Type-safe development with better tooling' },{{/isTypeScript}}
+    {{#hasAntd}}{ icon: '🎨', title: 'Ant Design', description: 'Enterprise-class UI design language' },{{/hasAntd}}
+    {{#hasTailwind}}{ icon: '🎨', title: 'Tailwind CSS', description: 'Utility-first CSS framework' },{{/hasTailwind}}
+    {{#hasRedux}}{ icon: '🔄', title: 'Redux Toolkit', description: 'Predictable state container for JavaScript apps' },{{/hasRedux}}
+    {{#hasRouter}}{ icon: '🧭', title: 'React Router', description: 'Declarative routing for React applications' },{{/hasRouter}}
+    {{#hasAxios}}{ icon: '🌐', title: 'Axios', description: 'Promise-based HTTP client for browser and Node.js' },{{/hasAxios}}
+    {{#hasReactHookForm}}{ icon: '📝', title: 'React Hook Form', description: 'Performant, flexible forms with easy validation' },{{/hasReactHookForm}}
+    {{#hasFramerMotion}}{ icon: '🎭', title: 'Framer Motion', description: 'Production-ready motion library for React' },{{/hasFramerMotion}}
+    {{#hasDayjs}}{ icon: '📅', title: 'Day.js', description: 'Minimalist JavaScript library for dates' },{{/hasDayjs}}
+  ]
+
+  const timeline = [
+    { time: 'Step 1', content: 'Project initialized with Vite and React' },
+    { time: 'Step 2', content: 'TypeScript configuration and setup' },
+    { time: 'Step 3', content: 'UI framework and styling integration' },
+    { time: 'Step 4', content: 'State management and routing setup' },
+    { time: 'Step 5', content: 'Additional features and tools configuration' },
+    { time: 'Ready!', content: 'Your modern React application is ready to use' },
   ]
 
   return (
     {{#hasAntd}}
     <div className="fade-in" style={{{containerStyle}}}>
-      <Card className="custom-card" title={<><InfoCircleOutlined /> About</>}>
-        <Title level={2}>About {{projectName}}</Title>
-        <Paragraph>
-          This application was created using the Vite Starter Generator, a powerful CLI tool
-          for creating modern React applications with various features and configurations.
-        </Paragraph>
-        <Title level={3}>Features</Title>
-        <List
-          dataSource={features}
-          renderItem={(item) => <List.Item>{item}</List.Item>}
-        />
+      {/* Hero Section */}
+      <Card className="custom-card" style={{{aboutHeroStyle}}}>
+        <div style={{{aboutHeroContentStyle}}}>
+          <Title level={1} style={{{aboutTitleStyle}}}>
+            <InfoCircleOutlined /> About {{projectName}}
+          </Title>
+          <Paragraph style={{{aboutParagraphStyle}}}>
+            This application was created using <strong>create-modern-vite-app</strong>, a powerful CLI tool
+            for generating modern React applications with cutting-edge technologies and best practices.
+          </Paragraph>
+          <Space>
+            <Link to="/">
+              <Button type="primary" icon={<RocketOutlined />}>
+                Go to Home
+              </Button>
+            </Link>
+            <Button icon={<GithubOutlined />}>
+              View Source
+            </Button>
+          </Space>
+        </div>
       </Card>
+
+      <Row gutter={[24, 24]} style={{{sectionStyle}}}>
+        {/* Project Information */}
+        <Col xs={24} lg={12}>
+          <Card className="custom-card" title={<><CodeOutlined /> Project Information</>}>
+            <Descriptions column={1} bordered>
+              <Descriptions.Item label="Project Name">{{projectName}}</Descriptions.Item>
+              <Descriptions.Item label="Generated">
+                {{#hasDayjs}}
+                {dayjs().format('MMMM D, YYYY')}
+                {{/hasDayjs}}
+                {{^hasDayjs}}
+                {new Date().toLocaleDateString()}
+                {{/hasDayjs}}
+              </Descriptions.Item>
+              <Descriptions.Item label="Build Tool">
+                <Badge status="processing" text="Vite" />
+              </Descriptions.Item>
+              <Descriptions.Item label="Framework">
+                <Badge status="success" text="React 18" />
+              </Descriptions.Item>
+              {{#isTypeScript}}
+              <Descriptions.Item label="Language">
+                <Badge status="default" text="TypeScript" />
+              </Descriptions.Item>
+              {{/isTypeScript}}
+              {{#hasAntd}}
+              <Descriptions.Item label="UI Library">
+                <Badge status="processing" text="Ant Design" />
+              </Descriptions.Item>
+              {{/hasAntd}}
+              {{#hasTailwind}}
+              <Descriptions.Item label="CSS Framework">
+                <Badge status="processing" text="Tailwind CSS" />
+              </Descriptions.Item>
+              {{/hasTailwind}}
+              {{#hasRedux}}
+              <Descriptions.Item label="State Management">
+                <Badge status="success" text="Redux Toolkit" />
+              </Descriptions.Item>
+              {{/hasRedux}}
+            </Descriptions>
+          </Card>
+        </Col>
+
+        {/* Setup Timeline */}
+        <Col xs={24} lg={12}>
+          <Card className="custom-card" title={<><TeamOutlined /> Setup Process</>}>
+            <Timeline
+              items={timeline.map(item => ({
+                children: (
+                  <div>
+                    <Text strong>{item.time}</Text>
+                    <br />
+                    <Text>{item.content}</Text>
+                  </div>
+                ),
+              }))}
+            />
+          </Card>
+        </Col>
+
+        {/* Features Grid */}
+        <Col span={24}>
+          <Card className="custom-card" title={<><HeartOutlined /> Included Features</>}>
+            <Row gutter={[16, 16]}>
+              {features.map((feature, index) => (
+                <Col xs={24} sm={12} md={8} lg={6} key={index}>
+                  <Card size="small" className="feature-card">
+                    <div style={{{featureIconStyle}}}>{feature.icon}</div>
+                    <Title level={5} style={{{featureTitleStyle}}}>{feature.title}</Title>
+                    <Paragraph style={{{featureDescStyle}}}>{feature.description}</Paragraph>
+                  </Card>
+                </Col>
+              ))}
+            </Row>
+          </Card>
+        </Col>
+
+        {{#hasReactHookForm}}
+        {/* Contact Form Demo */}
+        <Col span={24}>
+          <Card className="custom-card" title="Contact Form Demo (React Hook Form)">
+            <ContactForm />
+          </Card>
+        </Col>
+        {{/hasReactHookForm}}
+      </Row>
     </div>
     {{/hasAntd}}
     {{^hasAntd}}
-    <div>
-      <h1>About</h1>
-      <p>About {{projectName}}</p>
-      <ul>
-        {features.map((feature, index) => (
-          <li key={index}>{feature}</li>
-        ))}
-      </ul>
+    {{#hasTailwind}}
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-100 p-6">
+      <div className="max-w-6xl mx-auto">
+        {/* Hero Section */}
+        <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            ℹ️ About {{projectName}}
+          </h1>
+          <p className="text-xl text-gray-600 mb-6">
+            This application was created using <strong>create-modern-vite-app</strong>, a powerful CLI tool
+            for generating modern React applications with cutting-edge technologies and best practices.
+          </p>
+          <div className="flex gap-4">
+            <Link to="/" className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+              Go to Home
+            </Link>
+            <button className="bg-gray-200 text-gray-800 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors">
+              View Source
+            </button>
+          </div>
+        </div>
+
+        {/* Features Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          {features.map((feature, index) => (
+            <div key={index} className="bg-white rounded-lg shadow-md p-6">
+              <div className="text-3xl mb-3">{feature.icon}</div>
+              <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+              <p className="text-gray-600">{feature.description}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Project Info */}
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <h2 className="text-2xl font-bold mb-4">Project Information</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <strong>Project Name:</strong> {{projectName}}
+            </div>
+            <div>
+              <strong>Generated:</strong> {new Date().toLocaleDateString()}
+            </div>
+            <div>
+              <strong>Build Tool:</strong> Vite
+            </div>
+            <div>
+              <strong>Framework:</strong> React 18
+            </div>
+            {{#isTypeScript}}
+            <div>
+              <strong>Language:</strong> TypeScript
+            </div>
+            {{/isTypeScript}}
+            {{#hasTailwind}}
+            <div>
+              <strong>CSS Framework:</strong> Tailwind CSS
+            </div>
+            {{/hasTailwind}}
+            {{#hasRedux}}
+            <div>
+              <strong>State Management:</strong> Redux Toolkit
+            </div>
+            {{/hasRedux}}
+          </div>
+        </div>
+      </div>
     </div>
+    {{/hasTailwind}}
+    {{^hasTailwind}}
+    <div style={{{plainAboutContainerStyle}}}>
+      <div style={{{plainAboutHeroStyle}}}>
+        <h1 style={{{plainAboutH1Style}}}>ℹ️ About {{projectName}}</h1>
+        <p style={{{plainAboutPStyle}}}>
+          This application was created using <strong>create-modern-vite-app</strong>, a powerful CLI tool
+          for generating modern React applications with cutting-edge technologies.
+        </p>
+        <div style={{{plainAboutButtonContainerStyle}}}>
+          <Link to="/" style={{{plainAboutButtonStyle}}}>Go to Home</Link>
+          <button style={{{plainAboutButton2Style}}}>View Source</button>
+        </div>
+      </div>
+
+      <div style={{{plainAboutGridStyle}}}>
+        {features.map((feature, index) => (
+          <div key={index} style={{{plainAboutCardStyle}}}>
+            <div style={{{plainAboutIconStyle}}}>{feature.icon}</div>
+            <h3>{feature.title}</h3>
+            <p>{feature.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+    {{/hasTailwind}}
     {{/hasAntd}}
   )
 }
+
+{{#hasReactHookForm}}
+{{#hasAntd}}
+function ContactForm() {
+  const { register, handleSubmit, formState: { errors } } = useForm()
+  
+  const onSubmit = (data{{#isTypeScript}}: any{{/isTypeScript}}) => {
+    console.log('Form data:', data)
+    // Handle form submission here
+  }
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} style={{{formStyle}}}>
+      <Row gutter={16}>
+        <Col span={12}>
+          <div style={{{formGroupStyle}}}>
+            <label>Name</label>
+            <input
+              {...register('name', { required: 'Name is required' })}
+              style={{{inputStyle}}}
+            />
+            {errors.name && <span style={{{errorStyle}}}>{errors.name.message}</span>}
+          </div>
+        </Col>
+        <Col span={12}>
+          <div style={{{formGroupStyle}}}>
+            <label>Email</label>
+            <input
+              {...register('email', { 
+                required: 'Email is required',
+                pattern: { value: /^\S+@\S+$/i, message: 'Invalid email' }
+              })}
+              style={{{inputStyle}}}
+            />
+            {errors.email && <span style={{{errorStyle}}}>{errors.email.message}</span>}
+          </div>
+        </Col>
+        <Col span={24}>
+          <div style={{{formGroupStyle}}}>
+            <label>Message</label>
+            <textarea
+              {...register('message', { required: 'Message is required' })}
+              style={{{textareaStyle}}}
+            />
+            {errors.message && <span style={{{errorStyle}}}>{errors.message.message}</span>}
+          </div>
+        </Col>
+        <Col span={24}>
+          <Button type="primary" htmlType="submit">
+            Send Message
+          </Button>
+        </Col>
+      </Row>
+    </form>
+  )
+}
+{{/hasAntd}}
+{{/hasReactHookForm}}
 
 export default About
 {{/hasRouter}}
