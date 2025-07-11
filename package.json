@@ -1,10 +1,10 @@
 {
-  "name": "create-vite-starter",
-  "version": "1.0.0",
+  "name": "create-modern-vite-app",
+  "version": "1.0.1",
   "description": "A CLI tool to generate starter projects with Vite, React, TypeScript, and various UI libraries",
   "type": "module",
   "bin": {
-    "create-vite-starter": "./bin/cli.js"
+    "create-modern-vite-app": "./bin/cli.js"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -36,7 +36,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/anirband513/create-vite-starter.git"
+    "url": "https://github.com/anirband513/npm-package.git"
   },
   "files": [
     "dist",
