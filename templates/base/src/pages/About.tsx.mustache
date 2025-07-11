@@ -1,0 +1,60 @@
+{{#hasRouter}}
+{{#hasAntd}}
+import { Card, Typography, List } from 'antd'
+import { InfoCircleOutlined } from '@ant-design/icons'
+{{/hasAntd}}
+
+{{#hasAntd}}
+const { Title, Paragraph } = Typography
+{{/hasAntd}}
+
+{{#isTypeScript}}
+function About(): JSX.Element {
+{{/isTypeScript}}
+{{^isTypeScript}}
+function About() {
+{{/isTypeScript}}
+  const features = [
+    '⚡️ Vite for fast development',
+    '⚛️ React 18 with modern hooks',
+    {{#isTypeScript}}'🔷 TypeScript for better developer experience',{{/isTypeScript}}
+    {{#hasAntd}}'🎨 Ant Design for beautiful UI components',{{/hasAntd}}
+    {{#hasTailwind}}'🎨 Tailwind CSS for utility-first styling',{{/hasTailwind}}
+    {{#hasRedux}}'🔄 Redux Toolkit for state management',{{/hasRedux}}
+    {{#hasRouter}}'🧭 React Router for navigation',{{/hasRouter}}
+    {{#hasAxios}}'🌐 Axios for HTTP requests',{{/hasAxios}}
+  ]
+
+  return (
+    {{#hasAntd}}
+    <div style={{ maxWidth: 800, margin: '0 auto' }}>
+      <Card title={<><InfoCircleOutlined /> About</>}>
+        <Title level={2}>About {{projectName}}</Title>
+        <Paragraph>
+          This application was created using the Vite Starter Generator, a powerful CLI tool
+          for creating modern React applications with various features and configurations.
+        </Paragraph>
+        <Title level={3}>Features</Title>
+        <List
+          dataSource={features}
+          renderItem={(item) => <List.Item>{item}</List.Item>}
+        />
+      </Card>
+    </div>
+    {{/hasAntd}}
+    {{^hasAntd}}
+    <div>
+      <h1>About</h1>
+      <p>About {{projectName}}</p>
+      <ul>
+        {features.map((feature, index) => (
+          <li key={index}>{feature}</li>
+        ))}
+      </ul>
+    </div>
+    {{/hasAntd}}
+  )
+}
+
+export default About
+{{/hasRouter}}

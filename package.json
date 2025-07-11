@@ -1,0 +1,66 @@
+{
+  "name": "create-vite-starter",
+  "version": "1.0.0",
+  "description": "A CLI tool to generate starter projects with Vite, React, TypeScript, and various UI libraries",
+  "type": "module",
+  "bin": {
+    "create-vite-starter": "./bin/cli.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "build:cli": "tsc",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "prepublishOnly": "npm run build:cli"
+  },
+  "keywords": [
+    "vite",
+    "react",
+    "typescript",
+    "starter",
+    "template",
+    "cli",
+    "antd",
+    "tailwind",
+    "redux",
+    "scss",
+    "sass",
+    "boilerplate",
+    "scaffold",
+    "generator"
+  ],
+  "author": "anirband513 <anirband513@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anirband513/create-vite-starter.git"
+  },
+  "files": [
+    "dist",
+    "templates",
+    "bin"
+  ],
+  "dependencies": {
+    "commander": "^12.0.0",
+    "inquirer": "^10.2.2",
+    "chalk": "^5.3.0",
+    "ora": "^8.1.0",
+    "fs-extra": "^11.2.0",
+    "mustache": "^4.2.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/inquirer": "^9.0.7",
+    "@types/mustache": "^4.2.5",
+    "@eslint/js": "^9.29.0",
+    "@types/node": "^24.0.4",
+    "eslint": "^9.29.0",
+    "globals": "^16.2.0",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.34.1",
+    "vite": "^5.4.19"
+  }
+}

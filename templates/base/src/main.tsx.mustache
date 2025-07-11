@@ -1,0 +1,57 @@
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+{{#hasRouter}}
+import { BrowserRouter } from 'react-router-dom'
+{{/hasRouter}}
+{{#hasRedux}}
+import { Provider } from 'react-redux'
+import { store } from './store'
+{{/hasRedux}}
+{{#hasReactQuery}}
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+{{/hasReactQuery}}
+import App from './App'
+{{#hasTailwind}}
+import './index.css'
+{{/hasTailwind}}
+{{^hasTailwind}}
+{{#hasScss}}
+import './index.scss'
+{{/hasScss}}
+{{^hasScss}}
+import './index.css'
+{{/hasScss}}
+{{/hasTailwind}}
+{{#hasAntd}}
+import 'antd/dist/reset.css'
+{{/hasAntd}}
+
+{{#hasReactQuery}}
+const queryClient = new QueryClient()
+{{/hasReactQuery}}
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    {{#hasReactQuery}}
+    <QueryClientProvider client={queryClient}>
+    {{/hasReactQuery}}
+    {{#hasRedux}}
+    <Provider store={store}>
+    {{/hasRedux}}
+    {{#hasRouter}}
+    <BrowserRouter>
+    {{/hasRouter}}
+      <App />
+    {{#hasRouter}}
+    </BrowserRouter>
+    {{/hasRouter}}
+    {{#hasRedux}}
+    </Provider>
+    {{/hasRedux}}
+    {{#hasReactQuery}}
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
+    {{/hasReactQuery}}
+  </React.StrictMode>,
+)

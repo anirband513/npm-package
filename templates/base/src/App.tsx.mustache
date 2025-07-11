@@ -1,0 +1,170 @@
+import { useState } from 'react'
+{{#hasAntd}}
+import { Layout, Button, Card, Space, Typography } from 'antd'
+import { GithubOutlined, RocketOutlined } from '@ant-design/icons'
+{{/hasAntd}}
+{{#hasRouter}}
+import { Routes, Route, Link } from 'react-router-dom'
+import Home from './pages/Home'
+import About from './pages/About'
+{{/hasRouter}}
+{{#hasRedux}}
+import { useSelector, useDispatch } from 'react-redux'
+import { increment, decrement } from './store/counterSlice'
+{{/hasRedux}}
+{{#hasFramerMotion}}
+import { motion } from 'framer-motion'
+{{/hasFramerMotion}}
+{{#hasTailwind}}
+import './App.css'
+{{/hasTailwind}}
+
+{{#hasAntd}}
+const { Header, Content, Footer } = Layout
+const { Title, Paragraph } = Typography
+{{/hasAntd}}
+
+{{#isTypeScript}}
+function App(): JSX.Element {
+{{/isTypeScript}}
+{{^isTypeScript}}
+function App() {
+{{/isTypeScript}}
+  const [count, setCount] = useState(0)
+  {{#hasRedux}}
+  const reduxCount = useSelector((state: any) => state.counter.value)
+  const dispatch = useDispatch()
+  {{/hasRedux}}
+
+  {{#hasRouter}}
+  return (
+    {{#hasAntd}}
+    <Layout className="min-h-screen">
+      <Header className="flex items-center justify-between">
+        <Title level={3} style={{ color: 'white', margin: 0 }}>
+          {{projectName}}
+        </Title>
+        <Space>
+          <Link to="/">Home</Link>
+          <Link to="/about">About</Link>
+        </Space>
+      </Header>
+      <Content style={{ padding: '50px' }}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
+      </Content>
+      <Footer style={{ textAlign: 'center' }}>
+        Created with Vite + React {{#isTypeScript}}+ TypeScript{{/isTypeScript}}
+      </Footer>
+    </Layout>
+    {{/hasAntd}}
+    {{^hasAntd}}
+    <div className="App">
+      <nav>
+        <Link to="/">Home</Link>
+        <Link to="/about">About</Link>
+      </nav>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+    </div>
+    {{/hasAntd}}
+  )
+  {{/hasRouter}}
+  {{^hasRouter}}
+  return (
+    {{#hasAntd}}
+    <Layout className="min-h-screen">
+      <Header className="flex items-center justify-center">
+        <Title level={3} style={{ color: 'white', margin: 0 }}>
+          {{projectName}}
+        </Title>
+      </Header>
+      <Content style={{ padding: '50px' }}>
+        <div style={{ maxWidth: 800, margin: '0 auto' }}>
+          {{#hasFramerMotion}}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+          {{/hasFramerMotion}}
+            <Card title="Welcome to {{projectName}}" style={{ marginBottom: 24 }}>
+              <Paragraph>
+                This is a modern React application built with:
+              </Paragraph>
+              <ul>
+                <li>⚡️ Vite for fast development</li>
+                <li>⚛️ React 18 with modern hooks</li>
+                {{#isTypeScript}}<li>🔷 TypeScript for better developer experience</li>{{/isTypeScript}}
+                {{#hasAntd}}<li>🎨 Ant Design for beautiful UI components</li>{{/hasAntd}}
+                {{#hasTailwind}}<li>🎨 Tailwind CSS for utility-first styling</li>{{/hasTailwind}}
+                {{#hasRedux}}<li>🔄 Redux Toolkit for state management</li>{{/hasRedux}}
+                {{#hasAxios}}<li>🌐 Axios for HTTP requests</li>{{/hasAxios}}
+              </ul>
+            </Card>
+            
+            <Card title="Counter Example" style={{ marginBottom: 24 }}>
+              <Space direction="vertical" size="large">
+                <div>
+                  <Title level={4}>Local State: {count}</Title>
+                  <Space>
+                    <Button onClick={() => setCount(count + 1)}>+</Button>
+                    <Button onClick={() => setCount(count - 1)}>-</Button>
+                  </Space>
+                </div>
+                {{#hasRedux}}
+                <div>
+                  <Title level={4}>Redux State: {reduxCount}</Title>
+                  <Space>
+                    <Button onClick={() => dispatch(increment())}>+</Button>
+                    <Button onClick={() => dispatch(decrement())}>-</Button>
+                  </Space>
+                </div>
+                {{/hasRedux}}
+              </Space>
+            </Card>
+            
+            <Card title="Get Started">
+              <Space>
+                <Button type="primary" icon={<RocketOutlined />} size="large">
+                  Start Building
+                </Button>
+                <Button icon={<GithubOutlined />} size="large">
+                  View on GitHub
+                </Button>
+              </Space>
+            </Card>
+          {{#hasFramerMotion}}
+          </motion.div>
+          {{/hasFramerMotion}}
+        </div>
+      </Content>
+      <Footer style={{ textAlign: 'center' }}>
+        Created with Vite + React {{#isTypeScript}}+ TypeScript{{/isTypeScript}}
+      </Footer>
+    </Layout>
+    {{/hasAntd}}
+    {{^hasAntd}}
+    <div className="App">
+      <header className="App-header">
+        <h1>{{projectName}}</h1>
+        <p>Count: {count}</p>
+        <button onClick={() => setCount(count + 1)}>+</button>
+        <button onClick={() => setCount(count - 1)}>-</button>
+        {{#hasRedux}}
+        <p>Redux Count: {reduxCount}</p>
+        <button onClick={() => dispatch(increment())}>Redux +</button>
+        <button onClick={() => dispatch(decrement())}>Redux -</button>
+        {{/hasRedux}}
+      </header>
+    </div>
+    {{/hasAntd}}
+  )
+  {{/hasRouter}}
+}
+
+export default App

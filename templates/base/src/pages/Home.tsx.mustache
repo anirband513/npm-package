@@ -1,0 +1,42 @@
+{{#hasRouter}}
+{{#hasAntd}}
+import { Card, Typography, Space, Button } from 'antd'
+import { HomeOutlined } from '@ant-design/icons'
+{{/hasAntd}}
+
+{{#hasAntd}}
+const { Title, Paragraph } = Typography
+{{/hasAntd}}
+
+{{#isTypeScript}}
+function Home(): JSX.Element {
+{{/isTypeScript}}
+{{^isTypeScript}}
+function Home() {
+{{/isTypeScript}}
+  return (
+    {{#hasAntd}}
+    <div style={{ maxWidth: 800, margin: '0 auto' }}>
+      <Card title={<><HomeOutlined /> Home</>}>
+        <Title level={2}>Welcome to {{projectName}}</Title>
+        <Paragraph>
+          This is the home page of your new React application. Start building something amazing!
+        </Paragraph>
+        <Space>
+          <Button type="primary">Get Started</Button>
+          <Button>Learn More</Button>
+        </Space>
+      </Card>
+    </div>
+    {{/hasAntd}}
+    {{^hasAntd}}
+    <div>
+      <h1>Home</h1>
+      <p>Welcome to {{projectName}}</p>
+    </div>
+    {{/hasAntd}}
+  )
+}
+
+export default Home
+{{/hasRouter}}
