@@ -1,35 +1,50 @@
-# create-vite-starter
+# create-modern-vite-app
 
-A powerful CLI tool to generate modern React starter projects with Vite, TypeScript, and various popular libraries.
+A powerful CLI tool to generate modern React starter projects with Vite, TypeScript, and various popular libraries. Features professional UI integration with Ant Design, advanced SCSS support, and comprehensive template system.
 
 ## Features
 
 - 🚀 **Vite** - Lightning fast development server and build tool
 - ⚛️ **React 18** - Latest React with modern hooks
 - 🔷 **TypeScript** - Type safety and better developer experience
-- 🎨 **SCSS/Sass** - Enhanced CSS with variables, mixins, and modern compiler API
-- 🎨 **UI Libraries** - Choose from Ant Design, Tailwind CSS, or both
-- 🔄 **State Management** - Redux Toolkit integration
-- 🧭 **Routing** - React Router setup
-- 🌐 **HTTP Client** - Axios integration
+- 🎨 **Modern SCSS** - Enhanced CSS with variables, mixins, and modern compiler API
+- 🎨 **Ant Design** - Enterprise-class UI design with professional theming
+- 🎨 **Tailwind CSS** - Utility-first CSS framework
+- 🔄 **Redux Toolkit** - Predictable state management
+- 🧭 **React Router** - Declarative routing
+- 🌐 **Axios** - Promise-based HTTP client
 - 🌍 **Environment Configuration** - Development and production env files
 - 🏗️ **Build Configuration** - Configurable build output directory
 - 📏 **Code Quality** - ESLint, Prettier, and Husky setup
 - 🧪 **Testing** - Vitest and React Testing Library
 - 📚 **Documentation** - Storybook integration
 - 🎭 **Animation** - Framer Motion support
+- 🎯 **Template System** - Advanced Mustache templating with conditional rendering
+- 🔧 **Professional Layout** - Custom CSS classes and styling that complement UI frameworks
 
 ## Quick Start
 
 ```bash
 # Using npm
-npx create-vite-starter my-app
+npx create-modern-vite-app@latest my-app
 
 # Using yarn
-yarn create vite-starter my-app
+yarn create modern-vite-app my-app
 
 # Using pnpm
-pnpm create vite-starter my-app
+pnpm create modern-vite-app my-app
+```
+
+## Example Usage
+
+Create a modern React app with all features:
+
+```bash
+# Interactive setup
+npx create-modern-vite-app@latest my-modern-app
+
+# Quick setup with all features
+npx create-modern-vite-app@latest my-app --template "Basic React" --features "scss,antd,redux,router,axios,linting" --yes
 ```
 
 ## Interactive Setup
@@ -72,19 +87,19 @@ The CLI will guide you through the setup process:
 
 ```bash
 # Skip interactive prompts
-npx create-vite-starter my-app --yes
+npx create-modern-vite-app@latest my-app --yes
 
 # Specify template
-npx create-vite-starter my-app --template react-admin
+npx create-modern-vite-app@latest my-app --template "React Admin Dashboard"
 
 # Add specific features
-npx create-vite-starter my-app --features scss,antd,redux,router
+npx create-modern-vite-app@latest my-app --features scss,antd,redux,router
 
 # Choose package manager
-npx create-vite-starter my-app --package-manager yarn
+npx create-modern-vite-app@latest my-app --package-manager yarn
 
 # Use JavaScript instead of TypeScript
-npx create-vite-starter my-app --language javascript
+npx create-modern-vite-app@latest my-app --language javascript
 ```
 
 ## Generated Project Structure
@@ -95,25 +110,66 @@ my-app/
 │   └── vite.svg
 ├── src/
 │   ├── components/     # Reusable components
-│   ├── pages/         # Page components
+│   ├── pages/         # Page components (Home, About)
 │   ├── store/         # Redux store (if selected)
 │   ├── utils/         # Utility functions
-│   ├── App.tsx        # Main App component
-│   ├── main.tsx       # Application entry point
-│   └── index.css      # Global styles
+│   ├── App.tsx        # Main App component with Layout
+│   ├── main.tsx       # Application entry point with providers
+│   └── index.scss     # Global styles with custom variables
 ├── package.json
 ├── tsconfig.json      # TypeScript configuration
 ├── vite.config.ts     # Vite configuration
-├── eslint.config.js   # ESLint configuration
+├── eslint.config.js   # ESLint configuration (if selected)
 └── README.md
 ```
+
+## What's New in v1.0.7
+
+- ✅ **Fixed Template Rendering** - Resolved Mustache template parsing conflicts with JSX
+- ✅ **Improved Ant Design Integration** - Proper ConfigProvider theme configuration
+- ✅ **Professional Layout** - Custom CSS classes that complement UI frameworks
+- ✅ **Modern SCSS Support** - Conditional compilation based on selected features
+- ✅ **Enhanced Styling** - Gradient headers, custom animations, and responsive design
+- ✅ **Template Variables** - Advanced template system with unescaped content rendering
 
 ## After Generation
 
 1. Navigate to your project directory
 2. Install dependencies: `npm install`
 3. Start development server: `npm run dev`
-4. Start building your amazing app! 🚀
+4. Open your browser at `http://localhost:5173`
+5. Start building your amazing app! 🚀
+
+## Version Information
+
+- **Current Version**: 1.0.7
+- **Latest Stable**: Available on npm registry
+- **Node.js**: Requires Node.js 18.x or higher
+- **Package Manager**: Supports npm, yarn, and pnpm
+
+## Recent Updates (v1.0.7)
+
+✅ **Fixed UI Issues**: Resolved all template rendering and styling conflicts  
+✅ **Enhanced Ant Design**: Proper theme configuration with ConfigProvider  
+✅ **Professional Layout**: Custom CSS classes and responsive design  
+✅ **Modern SCSS**: Conditional compilation and framework integration  
+✅ **Template System**: Advanced Mustache templating with unescaped content  
+
+## Troubleshooting
+
+### Common Issues
+
+**Template rendering errors**: 
+```bash
+# Always use the latest version
+npx create-modern-vite-app@latest my-app
+```
+
+**Style conflicts**: 
+The package now includes professional styling that complements UI frameworks rather than conflicting with them.
+
+**Build issues**: 
+All templates are pre-tested and verified to work with the latest dependencies.
 
 ## Contributing
 

@@ -33,6 +33,15 @@ export interface TemplateData {
   hasStorybook: boolean;
   isTypeScript: boolean;
   packageManager: string;
+  // Style objects for JSX
+  headerTitleStyle: string;
+  contentStyle: string;
+  footerStyle: string;
+  containerStyle: string;
+  cardStyle: string;
+  cardExampleStyle: string;
+  // Ant Design theme config
+  antdThemeConfig: string;
 }
 
 const dependencies = {
@@ -149,6 +158,22 @@ export function generateTemplateData(config: ProjectConfig): TemplateData {
     hasStorybook: config.features.includes('storybook'),
     isTypeScript: config.language === 'typescript',
     packageManager: config.packageManager,
+    // Style objects for JSX
+    headerTitleStyle: "{{ color: 'white', margin: 0 }}",
+    contentStyle: "{{ padding: '50px' }}",
+    footerStyle: "{{ textAlign: 'center' }}",
+    containerStyle: "{{ maxWidth: 800, margin: '0 auto' }}",
+    cardStyle: "{{ marginBottom: 24 }}",
+    cardExampleStyle: "{{ marginBottom: 24 }}",
+    // Ant Design theme config
+    antdThemeConfig: `{{
+        algorithm: theme.defaultAlgorithm,
+        token: {
+          colorPrimary: '#1677ff',
+          colorInfo: '#1677ff',
+          borderRadius: 6,
+        },
+      }}`,
   };
 }
 

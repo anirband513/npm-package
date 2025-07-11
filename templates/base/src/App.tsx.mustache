@@ -39,9 +39,9 @@ function App() {
   {{#hasRouter}}
   return (
     {{#hasAntd}}
-    <Layout className="min-h-screen">
-      <Header className="flex items-center justify-between">
-        <Title level={3} style={{ color: 'white', margin: 0 }}>
+    <Layout className="custom-app">
+      <Header className="custom-header flex items-center justify-between">
+        <Title level={3} style={{{headerTitleStyle}}}>
           {{projectName}}
         </Title>
         <Space>
@@ -49,13 +49,13 @@ function App() {
           <Link to="/about">About</Link>
         </Space>
       </Header>
-      <Content style={{ padding: '50px' }}>
+      <Content className="custom-content" style={{{contentStyle}}}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
         </Routes>
       </Content>
-      <Footer style={{ textAlign: 'center' }}>
+      <Footer className="custom-footer" style={{{footerStyle}}}>
         Created with Vite + React {{#isTypeScript}}+ TypeScript{{/isTypeScript}}
       </Footer>
     </Layout>
@@ -77,14 +77,14 @@ function App() {
   {{^hasRouter}}
   return (
     {{#hasAntd}}
-    <Layout className="min-h-screen">
-      <Header className="flex items-center justify-center">
-        <Title level={3} style={{ color: 'white', margin: 0 }}>
+    <Layout className="custom-app">
+      <Header className="custom-header flex items-center justify-center">
+        <Title level={3} style={{{headerTitleStyle}}}>
           {{projectName}}
         </Title>
       </Header>
-      <Content style={{ padding: '50px' }}>
-        <div style={{ maxWidth: 800, margin: '0 auto' }}>
+      <Content className="custom-content" style={{{contentStyle}}}>
+        <div className="fade-in" style={{{containerStyle}}}>
           {{#hasFramerMotion}}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -92,7 +92,7 @@ function App() {
             transition={{ duration: 0.5 }}
           >
           {{/hasFramerMotion}}
-            <Card title="Welcome to {{projectName}}" style={{ marginBottom: 24 }}>
+            <Card className="custom-card" title="Welcome to {{projectName}}" style={{{cardStyle}}}>
               <Paragraph>
                 This is a modern React application built with:
               </Paragraph>
@@ -107,7 +107,7 @@ function App() {
               </ul>
             </Card>
             
-            <Card title="Counter Example" style={{ marginBottom: 24 }}>
+            <Card className="custom-card" title="Counter Example" style={{{cardExampleStyle}}}>
               <Space direction="vertical" size="large">
                 <div>
                   <Title level={4}>Local State: {count}</Title>
@@ -128,7 +128,7 @@ function App() {
               </Space>
             </Card>
             
-            <Card title="Get Started">
+            <Card className="custom-card" title="Get Started">
               <Space>
                 <Button type="primary" icon={<RocketOutlined />} size="large">
                   Start Building
@@ -143,7 +143,7 @@ function App() {
           {{/hasFramerMotion}}
         </div>
       </Content>
-      <Footer style={{ textAlign: 'center' }}>
+      <Footer className="custom-footer" style={{{footerStyle}}}>
         Created with Vite + React {{#isTypeScript}}+ TypeScript{{/isTypeScript}}
       </Footer>
     </Layout>

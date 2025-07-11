@@ -27,8 +27,8 @@ function About() {
 
   return (
     {{#hasAntd}}
-    <div style={{ maxWidth: 800, margin: '0 auto' }}>
-      <Card title={<><InfoCircleOutlined /> About</>}>
+    <div className="fade-in" style={{{containerStyle}}}>
+      <Card className="custom-card" title={<><InfoCircleOutlined /> About</>}>
         <Title level={2}>About {{projectName}}</Title>
         <Paragraph>
           This application was created using the Vite Starter Generator, a powerful CLI tool

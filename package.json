@@ -1,6 +1,6 @@
 {
   "name": "create-modern-vite-app",
-  "version": "1.0.1",
+  "version": "1.0.7",
   "description": "A CLI tool to generate starter projects with Vite, React, TypeScript, and various UI libraries",
   "type": "module",
   "bin": {

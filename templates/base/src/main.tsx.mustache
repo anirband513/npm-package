@@ -11,7 +11,11 @@ import { store } from './store'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 {{/hasReactQuery}}
+{{#hasAntd}}
+import { ConfigProvider, theme } from 'antd'
+{{/hasAntd}}
 import App from './App'
+{{#hasAntd}}
 {{#hasTailwind}}
 import './index.css'
 {{/hasTailwind}}
@@ -23,8 +27,19 @@ import './index.scss'
 import './index.css'
 {{/hasScss}}
 {{/hasTailwind}}
-{{#hasAntd}}
-import 'antd/dist/reset.css'
+{{/hasAntd}}
+{{^hasAntd}}
+{{#hasTailwind}}
+import './index.css'
+{{/hasTailwind}}
+{{^hasTailwind}}
+{{#hasScss}}
+import './index.scss'
+{{/hasScss}}
+{{^hasScss}}
+import './index.css'
+{{/hasScss}}
+{{/hasTailwind}}
 {{/hasAntd}}
 
 {{#hasReactQuery}}
@@ -39,6 +54,11 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     {{#hasRedux}}
     <Provider store={store}>
     {{/hasRedux}}
+    {{#hasAntd}}
+    <ConfigProvider
+      theme={{{antdThemeConfig}}}
+    >
+    {{/hasAntd}}
     {{#hasRouter}}
     <BrowserRouter>
     {{/hasRouter}}
@@ -46,6 +66,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     {{#hasRouter}}
     </BrowserRouter>
     {{/hasRouter}}
+    {{#hasAntd}}
+    </ConfigProvider>
+    {{/hasAntd}}
     {{#hasRedux}}
     </Provider>
     {{/hasRedux}}
