@@ -60,6 +60,18 @@ function Dashboard() {
   {{/hasAxios}}
 
   {{#hasAntd}}
+  // Style constants
+  const titleStyle = { marginBottom: 24 }
+  const rowSpacing = [16, 16]
+  const rowMarginBottom = { marginBottom: 24 }
+  const positiveValueStyle = { color: '#3f8600' }
+  const negativeValueStyle = { color: '#cf1322' }
+  const fullWidthStyle = { width: '100%' }
+  const fontSize24Style = { fontSize: '24px' }
+  const fontSize24WarningStyle = { fontSize: '24px', color: '#faad14' }
+  const fontSize24SuccessStyle = { fontSize: '24px', color: '#52c41a' }
+  const marginTop16Style = { marginTop: 16 }
+
   const columns = [
     {
       title: 'Product',
@@ -98,10 +110,10 @@ function Dashboard() {
   return (
     {{#hasAntd}}
     <div>
-      <Title level={2} style={{ marginBottom: 24 }}>Dashboard Overview</Title>
+      <Title level={2} style={titleStyle}>Dashboard Overview</Title>
       
       {/* Statistics Cards */}
-      <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
+      <Row gutter={rowSpacing} style={rowMarginBottom}>
         <Col xs={24} sm={12} lg={6}>
           <Card>
             <Statistic
@@ -109,7 +121,7 @@ function Dashboard() {
               value={1128}
               prefix={<UserOutlined />}
               suffix={<Tag color="green"><ArrowUpOutlined /> 12%</Tag>}
-              valueStyle={{ color: '#3f8600' }}
+              valueStyle={positiveValueStyle}
             />
           </Card>
         </Col>
@@ -120,7 +132,7 @@ function Dashboard() {
               value={2543}
               prefix={<ShoppingCartOutlined />}
               suffix={<Tag color="green"><ArrowUpOutlined /> 8%</Tag>}
-              valueStyle={{ color: '#3f8600' }}
+              valueStyle={positiveValueStyle}
             />
           </Card>
         </Col>
@@ -132,7 +144,7 @@ function Dashboard() {
               prefix={<DollarOutlined />}
               precision={2}
               suffix={<Tag color="red"><ArrowDownOutlined /> 3%</Tag>}
-              valueStyle={{ color: '#cf1322' }}
+              valueStyle={negativeValueStyle}
             />
           </Card>
         </Col>
@@ -143,17 +155,17 @@ function Dashboard() {
               value={28.5}
               prefix={<RiseOutlined />}
               suffix="%"
-              valueStyle={{ color: '#3f8600' }}
+              valueStyle={positiveValueStyle}
             />
           </Card>
         </Col>
       </Row>
 
       {/* Performance Metrics */}
-      <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
+      <Row gutter={rowSpacing} style={rowMarginBottom}>
         <Col xs={24} lg={12}>
           <Card title="Sales Performance" extra={<a href="#">View Details</a>}>
-            <Space direction="vertical" style={{ width: '100%' }} size="large">
+            <Space direction="vertical" style={fullWidthStyle} size="large">
               <div>
                 <Text>Monthly Target</Text>
                 <Progress percent={75} status="active" />
@@ -177,7 +189,7 @@ function Dashboard() {
                   title="Active Users"
                   value={893}
                   prefix={<UserOutlined />}
-                  valueStyle={{ fontSize: '24px' }}
+                  valueStyle={fontSize24Style}
                 />
               </Col>
               <Col span={12}>
@@ -185,17 +197,17 @@ function Dashboard() {
                   title="Pending Orders"
                   value={45}
                   prefix={<ShoppingCartOutlined />}
-                  valueStyle={{ fontSize: '24px', color: '#faad14' }}
+                  valueStyle={fontSize24WarningStyle}
                 />
               </Col>
             </Row>
-            <Row gutter={16} style={{ marginTop: 16 }}>
+            <Row gutter={16} style={marginTop16Style}>
               <Col span={12}>
                 <Statistic
                   title="Conversion Rate"
                   value={3.8}
                   suffix="%"
-                  valueStyle={{ fontSize: '24px', color: '#52c41a' }}
+                  valueStyle={fontSize24SuccessStyle}
                 />
               </Col>
               <Col span={12}>
@@ -203,7 +215,7 @@ function Dashboard() {
                   title="Avg. Order Value"
                   value={125}
                   prefix="$"
-                  valueStyle={{ fontSize: '24px' }}
+                  valueStyle={fontSize24Style}
                 />
               </Col>
             </Row>

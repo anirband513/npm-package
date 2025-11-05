@@ -41,6 +41,32 @@ function App(): JSX.Element {
 {{^isTypeScript}}
 function App() {
 {{/isTypeScript}}
+  {{#hasAntd}}
+  // Style constants
+  const layoutStyle = { minHeight: '100vh' }
+  const headerStyle = {
+    position: 'sticky' as const,
+    top: 0,
+    zIndex: 1000,
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    background: '#fff',
+    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+    padding: '0 24px',
+  }
+  const logoContainerStyle = { display: 'flex', alignItems: 'center', gap: '24px' }
+  const logoStyle = { margin: 0, color: '#1890ff' }
+  const menuStyle = { border: 'none', flex: 1, minWidth: 400 }
+  const iconStyle = { fontSize: '20px', cursor: 'pointer' }
+  const userDropdownStyle = { cursor: 'pointer' }
+  const contentStyle = { padding: '24px', background: '#f0f2f5', minHeight: 'calc(100vh - 134px)' }
+  const footerStyle = { textAlign: 'center' as const, background: '#001529', color: 'white' }
+
+  const dropdownMenuConfig = { items: userMenuItems }
+  {{/hasAntd}}
+
   const [cartDrawerVisible, setCartDrawerVisible] = useState(false)
   {{#hasRouter}}
   const location = useLocation()
@@ -83,27 +109,16 @@ function App() {
   {{#hasRouter}}
   return (
     {{#hasAntd}}
-    <Layout style={{ minHeight: '100vh' }}>
-      <Header style={{
-        position: 'sticky',
-        top: 0,
-        zIndex: 1000,
-        width: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        background: '#fff',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-        padding: '0 24px',
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-          <Title level={3} style={{ margin: 0, color: '#1890ff' }}>
+    <Layout style={layoutStyle}>
+      <Header style={headerStyle}>
+        <div style={logoContainerStyle}>
+          <Title level={3} style={logoStyle}>
             <ShoppingOutlined /> {{projectName}}
           </Title>
           <Menu
             mode="horizontal"
             selectedKeys={[location.pathname]}
-            style={{ border: 'none', flex: 1, minWidth: 400 }}
+            style={menuStyle}
             items={[
               {
                 key: '/',
@@ -120,15 +135,15 @@ function App() {
         </div>
         <Space size="large">
           <Badge count={0} showZero={false}>
-            <HeartOutlined style={{ fontSize: '20px', cursor: 'pointer' }} />
+            <HeartOutlined style={iconStyle} />
           </Badge>
           <Badge count={cartCount} showZero>
             <Link to="/cart">
-              <ShoppingCartOutlined style={{ fontSize: '20px', cursor: 'pointer' }} />
+              <ShoppingCartOutlined style={iconStyle} />
             </Link>
           </Badge>
-          <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
-            <Space style={{ cursor: 'pointer' }}>
+          <Dropdown menu={dropdownMenuConfig} placement="bottomRight">
+            <Space style={userDropdownStyle}>
               <Avatar icon={<UserOutlined />} />
               <Text>Guest</Text>
             </Space>
@@ -136,7 +151,7 @@ function App() {
         </Space>
       </Header>
       
-      <Content style={{ padding: '24px', background: '#f0f2f5', minHeight: 'calc(100vh - 134px)' }}>
+      <Content style={contentStyle}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
@@ -146,7 +161,7 @@ function App() {
         </Routes>
       </Content>
       
-      <Footer style={{ textAlign: 'center', background: '#001529', color: 'white' }}>
+      <Footer style={footerStyle}>
         {{projectName}} ©{new Date().getFullYear()} - Built with Vite + React {{#isTypeScript}}+ TypeScript{{/isTypeScript}}
       </Footer>
     </Layout>

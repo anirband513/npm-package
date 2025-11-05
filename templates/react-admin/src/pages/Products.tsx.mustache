@@ -48,6 +48,13 @@ function Products() {
   }, [])
   {{/hasAxios}}
 
+  const imageStyle = { objectFit: 'contain' as const }
+  const headerStyle = { display: 'flex', justifyContent: 'space-between', marginBottom: 16 }
+  const searchStyle = { marginBottom: 16 }
+  const inputStyle = { width: 300 }
+  const selectStyle = { width: 150 }
+  const paginationConfig = { pageSize: 10 }
+
   {{#hasAntd}}
   const columns = [
     {
@@ -55,7 +62,7 @@ function Products() {
       dataIndex: 'image',
       key: 'image',
       render: (image{{#isTypeScript}}: string{{/isTypeScript}}) => (
-        <Image src={image} width={50} height={50} style={{ objectFit: 'contain' }} />
+        <Image src={image} width={50} height={50} style={imageStyle} />
       ),
     },
     {
@@ -97,21 +104,21 @@ function Products() {
   return (
     {{#hasAntd}}
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
+      <div style={headerStyle}>
         <Title level={2}><ShoppingOutlined /> Products Management</Title>
         <Button type="primary" icon={<PlusOutlined />}>Add Product</Button>
       </div>
       
       <Card>
-        <Space style={{ marginBottom: 16 }}>
+        <Space style={searchStyle}>
           <Input
             placeholder="Search products..."
             prefix={<SearchOutlined />}
-            style={{ width: 300 }}
+            style={inputStyle}
           />
           <Select
             placeholder="Category"
-            style={{ width: 150 }}
+            style={selectStyle}
             options={[
               { value: 'all', label: 'All Categories' },
               { value: 'electronics', label: 'Electronics' },
@@ -126,7 +133,7 @@ function Products() {
           dataSource={products}
           rowKey="id"
           loading={loading}
-          pagination={{ pageSize: 10 }}
+          pagination={paginationConfig}
         />
         {{/hasAxios}}
         {{^hasAxios}}

@@ -13,20 +13,33 @@ function Analytics(): JSX.Element {
 {{^isTypeScript}}
 function Analytics() {
 {{/isTypeScript}}
+  {{#hasAntd}}
+  // Style constants
+  const rowSpacing = [16, 16]
+  const rowMarginBottom = { marginBottom: 24 }
+  const positiveIconStyle = { color: '#3f8600' }
+  const negativeIconStyle = { color: '#cf1322' }
+  const positiveValueStyle = { color: '#3f8600' }
+  const negativeValueStyle = { color: '#cf1322' }
+  const blueValueStyle = { color: '#1890ff' }
+  const fullWidthStyle = { width: '100%' }
+  const statHeaderStyle = { display: 'flex', justifyContent: 'space-between', marginBottom: 8 }
+  {{/hasAntd}}
+
   return (
     {{#hasAntd}}
     <div>
       <Title level={2}><BarChartOutlined /> Analytics & Reports</Title>
       
-      <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
+      <Row gutter={rowSpacing} style={rowMarginBottom}>
         <Col xs={24} md={12} lg={6}>
           <Card>
             <Statistic
               title="Page Views"
               value={11893}
               suffix="/ month"
-              prefix={<ArrowUpOutlined style={{ color: '#3f8600' }} />}
-              valueStyle={{ color: '#3f8600' }}
+              prefix={<ArrowUpOutlined style={positiveIconStyle} />}
+              valueStyle={positiveValueStyle}
             />
           </Card>
         </Col>
@@ -36,8 +49,8 @@ function Analytics() {
               title="Bounce Rate"
               value={23.5}
               suffix="%"
-              prefix={<ArrowDownOutlined style={{ color: '#cf1322' }} />}
-              valueStyle={{ color: '#cf1322' }}
+              prefix={<ArrowDownOutlined style={negativeIconStyle} />}
+              valueStyle={negativeValueStyle}
             />
           </Card>
         </Col>
@@ -47,7 +60,7 @@ function Analytics() {
               title="Session Duration"
               value={3.45}
               suffix="min"
-              valueStyle={{ color: '#1890ff' }}
+              valueStyle={blueValueStyle}
             />
           </Card>
         </Col>
@@ -57,33 +70,33 @@ function Analytics() {
               title="New Users"
               value={432}
               suffix="/ week"
-              prefix={<ArrowUpOutlined style={{ color: '#3f8600' }} />}
-              valueStyle={{ color: '#3f8600' }}
+              prefix={<ArrowUpOutlined style={positiveIconStyle} />}
+              valueStyle={positiveValueStyle}
             />
           </Card>
         </Col>
       </Row>
 
-      <Row gutter={[16, 16]}>
+      <Row gutter={rowSpacing}>
         <Col xs={24} lg={12}>
           <Card title="Traffic Sources">
-            <Space direction="vertical" style={{ width: '100%' }} size="large">
+            <Space direction="vertical" style={fullWidthStyle} size="large">
               <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                <div style={statHeaderStyle}>
                   <Text>Direct</Text>
                   <Text strong>45%</Text>
                 </div>
                 <Progress percent={45} strokeColor="#52c41a" />
               </div>
               <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                <div style={statHeaderStyle}>
                   <Text>Organic Search</Text>
                   <Text strong>35%</Text>
                 </div>
                 <Progress percent={35} strokeColor="#1890ff" />
               </div>
               <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                <div style={statHeaderStyle}>
                   <Text>Social Media</Text>
                   <Text strong>{20}%</Text>
                 </div>
@@ -94,30 +107,30 @@ function Analytics() {
         </Col>
         <Col xs={24} lg={12}>
           <Card title="Conversion Funnel">
-            <Space direction="vertical" style={{ width: '100%' }} size="large">
+            <Space direction="vertical" style={fullWidthStyle} size="large">
               <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                <div style={statHeaderStyle}>
                   <Text>Visitors</Text>
                   <Text strong>10,000</Text>
                 </div>
                 <Progress percent={100} strokeColor="#1890ff" showInfo={false} />
               </div>
               <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                <div style={statHeaderStyle}>
                   <Text>Product Views</Text>
                   <Text strong>6,500</Text>
                 </div>
                 <Progress percent={65} strokeColor="#1890ff" showInfo={false} />
               </div>
               <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                <div style={statHeaderStyle}>
                   <Text>Add to Cart</Text>
                   <Text strong>2,100</Text>
                 </div>
                 <Progress percent={21} strokeColor="#1890ff" showInfo={false} />
               </div>
               <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                <div style={statHeaderStyle}>
                   <Text>Purchases</Text>
                   <Text strong>450</Text>
                 </div>

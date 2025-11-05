@@ -67,25 +67,80 @@ function App() {
   ]
 
   {{#hasRouter}}
+  const sidebarStyle = {
+    background: '#001529',
+  }
+
+  const logoContainerStyle = {
+    height: '64px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderBottom: '1px solid rgba(255,255,255,0.1)',
+  }
+
+  const logoTitleStyle = {
+    color: 'white',
+    margin: 0,
+  }
+
+  const headerStyle = {
+    background: '#fff',
+    padding: '0 24px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    boxShadow: '0 1px 4px rgba(0,21,41,0.08)',
+  }
+
+  const headerLeftStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '16px',
+  }
+
+  const toggleIconStyle = {
+    fontSize: '18px',
+    cursor: 'pointer',
+  }
+
+  const headerTitleStyle = {
+    margin: 0,
+  }
+
+  const bellIconStyle = {
+    fontSize: '18px',
+    cursor: 'pointer',
+  }
+
+  const userDropdownStyle = {
+    cursor: 'pointer',
+  }
+
+  const contentStyle = {
+    margin: '24px 16px',
+    padding: 24,
+    background: '#f0f2f5',
+    minHeight: 280,
+  }
+
+  const layoutStyle = {
+    minHeight: '100vh',
+  }
+
+  const dropdownMenuConfig = { items: userMenuItems }
+
   return (
     {{#hasAntd}}
-    <Layout style={{ minHeight: '100vh' }}>
+    <Layout style={layoutStyle}>
       <Sider 
         collapsible 
         collapsed={collapsed} 
         onCollapse={setCollapsed}
-        style={{
-          background: '#001529',
-        }}
+        style={sidebarStyle}
       >
-        <div style={{ 
-          height: '64px', 
-          display: 'flex', 
-          alignItems: 'center', 
-          justifyContent: 'center',
-          borderBottom: '1px solid rgba(255,255,255,0.1)'
-        }}>
-          <Title level={4} style={{ color: 'white', margin: 0 }}>
+        <div style={logoContainerStyle}>
+          <Title level={4} style={logoTitleStyle}>
             {collapsed ? 'AD' : 'Admin'}
           </Title>
         </div>
@@ -123,36 +178,29 @@ function App() {
         />
       </Sider>
       <Layout>
-        <Header style={{ 
-          background: '#fff', 
-          padding: '0 24px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          boxShadow: '0 1px 4px rgba(0,21,41,0.08)'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <Header style={headerStyle}>
+          <div style={headerLeftStyle}>
             {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-              style: { fontSize: '18px', cursor: 'pointer' },
+              style: toggleIconStyle,
               onClick: () => setCollapsed(!collapsed),
             })}
-            <Title level={4} style={{ margin: 0 }}>
+            <Title level={4} style={headerTitleStyle}>
               {{projectName}}
             </Title>
           </div>
           <Space size="large">
             <Badge count={5} size="small">
-              <BellOutlined style={{ fontSize: '18px', cursor: 'pointer' }} />
+              <BellOutlined style={bellIconStyle} />
             </Badge>
-            <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
-              <Space style={{ cursor: 'pointer' }}>
+            <Dropdown menu={dropdownMenuConfig} placement="bottomRight">
+              <Space style={userDropdownStyle}>
                 <Avatar icon={<UserOutlined />} />
                 <Text>Admin User</Text>
               </Space>
             </Dropdown>
           </Space>
         </Header>
-        <Content style={{ margin: '24px 16px', padding: 24, background: '#f0f2f5', minHeight: 280 }}>
+        <Content style={contentStyle}>
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/users" element={<Users />} />

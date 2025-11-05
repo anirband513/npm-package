@@ -13,6 +13,19 @@ function Settings(): JSX.Element {
 {{^isTypeScript}}
 function Settings() {
 {{/isTypeScript}}
+  {{#hasAntd}}
+  // Style constants
+  const cardMarginBottom = { marginBottom: 16 }
+  const fullWidthStyle = { width: '100%' }
+  const switchRowStyle = { display: 'flex', justifyContent: 'space-between', alignItems: 'center' }
+
+  const initialFormValues = {
+    siteName: '{{projectName}}',
+    siteUrl: 'https://example.com',
+    email: 'admin@example.com',
+  }
+  {{/hasAntd}}
+
   const onFinish = (values{{#isTypeScript}}: any{{/isTypeScript}}) => {
     console.log('Settings saved:', values)
   }
@@ -22,15 +35,11 @@ function Settings() {
     <div>
       <Title level={2}><SettingOutlined /> Settings</Title>
       
-      <Card title="General Settings" style={{ marginBottom: 16 }}>
+      <Card title="General Settings" style={cardMarginBottom}>
         <Form
           layout="vertical"
           onFinish={onFinish}
-          initialValues={{
-            siteName: '{{projectName}}',
-            siteUrl: 'https://example.com',
-            email: 'admin@example.com',
-          }}
+          initialValues={initialFormValues}
         >
           <Form.Item label="Site Name" name="siteName">
             <Input placeholder="Enter site name" />
@@ -49,10 +58,10 @@ function Settings() {
         </Form>
       </Card>
 
-      <Card title="Notification Preferences" style={{ marginBottom: 16 }}>
+      <Card title="Notification Preferences" style={cardMarginBottom}>
         <Form layout="vertical">
-          <Space direction="vertical" style={{ width: '100%' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Space direction="vertical" style={fullWidthStyle}>
+            <div style={switchRowStyle}>
               <div>
                 <Text strong>Email Notifications</Text>
                 <br />
@@ -61,7 +70,7 @@ function Settings() {
               <Switch defaultChecked />
             </div>
             <Divider />
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={switchRowStyle}>
               <div>
                 <Text strong>SMS Notifications</Text>
                 <br />
@@ -70,7 +79,7 @@ function Settings() {
               <Switch />
             </div>
             <Divider />
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={switchRowStyle}>
               <div>
                 <Text strong>Push Notifications</Text>
                 <br />
