@@ -488,6 +488,7 @@ async function generateTsConfig(projectPath: string, templateData: TemplateData)
       isolatedModules: true,
       noEmit: true,
       jsx: 'react-jsx',
+      jsxImportSource: 'react',
       strict: true,
       noUnusedLocals: true,
       noUnusedParameters: true,
