@@ -1,0 +1,228 @@
+{{#hasAntd}}
+import { Card, Row, Col, Button, Typography, Space, Tag, InputNumber, Divider, Rate } from 'antd'
+import { ShoppingCartOutlined, HeartOutlined, StarFilled } from '@ant-design/icons'
+{{/hasAntd}}
+{{#hasAxios}}
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+{{/hasAxios}}
+{{^hasAxios}}
+import { useState } from 'react'
+{{/hasAxios}}
+{{#hasRouter}}
+import { useParams } from 'react-router-dom'
+{{/hasRouter}}
+{{#hasRedux}}
+import { useDispatch } from 'react-redux'
+import { addToCart } from '../store/cartSlice'
+{{/hasRedux}}
+
+{{#hasAntd}}
+const { Title, Paragraph, Text } = Typography
+{{/hasAntd}}
+
+{{#isTypeScript}}
+{{#hasAxios}}
+interface Product {
+  id: number
+  title: string
+  price: number
+  description: string
+  image: string
+  category: string
+  rating: {
+    rate: number
+    count: number
+  }
+}
+{{/hasAxios}}
+
+function ProductDetail(): JSX.Element {
+{{/isTypeScript}}
+{{^isTypeScript}}
+function ProductDetail() {
+{{/isTypeScript}}
+  {{#hasRouter}}
+  const { id } = useParams()
+  {{/hasRouter}}
+  {{#hasAxios}}
+  const [product, setProduct] = useState{{#isTypeScript}}<Product | null>{{/isTypeScript}}(null)
+  const [loading, setLoading] = useState(false)
+  {{/hasAxios}}
+  const [quantity, setQuantity] = useState(1)
+  {{#hasRedux}}
+  const dispatch = useDispatch()
+  {{/hasRedux}}
+
+  {{#hasAxios}}
+  useEffect(() => {
+    const fetchProduct = async () => {
+      setLoading(true)
+      try {
+        const response = await axios.get(`https://fakestoreapi.com/products/${id}`)
+        setProduct(response.data)
+      } catch (error) {
+        console.error('Error fetching product:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchProduct()
+  }, [id])
+
+  {{#hasRedux}}
+  const handleAddToCart = () => {
+    if (product) {
+      dispatch(addToCart({ ...product, quantity }))
+    }
+  }
+  {{/hasRedux}}
+  {{/hasAxios}}
+
+  {{#hasAxios}}
+  if (loading || !product) {
+    return (
+      {{#hasAntd}}
+      <Card loading={loading}>
+        <p>Loading product...</p>
+      </Card>
+      {{/hasAntd}}
+      {{^hasAntd}}
+      <div>Loading...</div>
+      {{/hasAntd}}
+    )
+  }
+  {{/hasAxios}}
+
+  return (
+    {{#hasAntd}}
+    {{#hasAxios}}
+    <Card>
+      <Row gutter={[32, 32]}>
+        <Col xs={24} md={10}>
+          <div style={{ 
+            background: '#fff',
+            padding: 40,
+            textAlign: 'center',
+            border: '1px solid #f0f0f0',
+            borderRadius: 8
+          }}>
+            <img
+              src={product.image}
+              alt={product.title}
+              style={{ maxWidth: '100%', maxHeight: 400, objectFit: 'contain' }}
+            />
+          </div>
+        </Col>
+        <Col xs={24} md={14}>
+          <Space direction="vertical" size="large" style={{ width: '100%' }}>
+            <div>
+              <Tag color="blue">{product.category}</Tag>
+              <Title level={2} style={{ marginTop: 8 }}>
+                {product.title}
+              </Title>
+            </div>
+
+            <div>
+              <Space>
+                <Rate disabled defaultValue={product.rating.rate} allowHalf />
+                <Text>
+                  {product.rating.rate} ({product.rating.count} reviews)
+                </Text>
+              </Space>
+            </div>
+
+            <Divider />
+
+            <div>
+              <Title level={1} style={{ color: '#1890ff', margin: 0 }}>
+                ${product.price.toFixed(2)}
+              </Title>
+              <Text type="secondary">Tax included. Shipping calculated at checkout.</Text>
+            </div>
+
+            <Divider />
+
+            <div>
+              <Title level={5}>Description</Title>
+              <Paragraph>{product.description}</Paragraph>
+            </div>
+
+            <Divider />
+
+            <div>
+              <Space size="large" style={{ width: '100%' }}>
+                <div>
+                  <Text strong style={{ display: 'block', marginBottom: 8 }}>Quantity</Text>
+                  <InputNumber
+                    min={1}
+                    max={10}
+                    defaultValue={1}
+                    onChange={(value) => setQuantity(value || 1)}
+                  />
+                </div>
+              </Space>
+            </div>
+
+            <Space size="middle" style={{ width: '100%' }}>
+              {{#hasRedux}}
+              <Button
+                type="primary"
+                size="large"
+                icon={<ShoppingCartOutlined />}
+                onClick={handleAddToCart}
+                style={{ flex: 1 }}
+              >
+                Add to Cart
+              </Button>
+              {{/hasRedux}}
+              {{^hasRedux}}
+              <Button
+                type="primary"
+                size="large"
+                icon={<ShoppingCartOutlined />}
+                style={{ flex: 1 }}
+              >
+                Add to Cart
+              </Button>
+              {{/hasRedux}}
+              <Button
+                size="large"
+                icon={<HeartOutlined />}
+              >
+                Add to Wishlist
+              </Button>
+            </Space>
+          </Space>
+        </Col>
+      </Row>
+    </Card>
+    {{/hasAxios}}
+    {{^hasAxios}}
+    <Card>
+      <Text>Enable Axios to display product details</Text>
+    </Card>
+    {{/hasAxios}}
+    {{/hasAntd}}
+    {{^hasAntd}}
+    <div className="product-detail">
+      <h2>Product Detail</h2>
+      {{#hasAxios}}
+      <div className="product-content">
+        <img src={product?.image} alt={product?.title} />
+        <div>
+          <h1>{product?.title}</h1>
+          <p>${product?.price}</p>
+          <p>{product?.description}</p>
+          {{#hasRedux}}
+          <button onClick={handleAddToCart}>Add to Cart</button>
+          {{/hasRedux}}
+        </div>
+      </div>
+      {{/hasAxios}}
+    </div>
+    {{/hasAntd}}
+  )
+}
+
+export default ProductDetail

@@ -1,0 +1,235 @@
+{{#hasAntd}}
+import { Card, Row, Col, Button, Typography, Space, Tag, Select, Input, Pagination } from 'antd'
+import { ShoppingCartOutlined, HeartOutlined, StarFilled, SearchOutlined } from '@ant-design/icons'
+{{/hasAntd}}
+{{#hasAxios}}
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+{{/hasAxios}}
+{{#hasRouter}}
+import { Link } from 'react-router-dom'
+{{/hasRouter}}
+{{#hasRedux}}
+import { useDispatch } from 'react-redux'
+import { addToCart } from '../store/cartSlice'
+{{/hasRedux}}
+
+{{#hasAntd}}
+const { Title, Text } = Typography
+{{/hasAntd}}
+
+{{#isTypeScript}}
+{{#hasAxios}}
+interface Product {
+  id: number
+  title: string
+  price: number
+  image: string
+  category: string
+  rating: {
+    rate: number
+    count: number
+  }
+}
+{{/hasAxios}}
+
+function Products(): JSX.Element {
+{{/isTypeScript}}
+{{^isTypeScript}}
+function Products() {
+{{/isTypeScript}}
+  {{#hasAxios}}
+  const [products, setProducts] = useState{{#isTypeScript}}<Product[]>{{/isTypeScript}}([])
+  const [loading, setLoading] = useState(false)
+  const [selectedCategory, setSelectedCategory] = useState('all')
+  {{#hasRedux}}
+  const dispatch = useDispatch()
+  {{/hasRedux}}
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true)
+      try {
+        const url = selectedCategory === 'all' 
+          ? 'https://fakestoreapi.com/products'
+          : `https://fakestoreapi.com/products/category/${selectedCategory}`
+        const response = await axios.get(url)
+        setProducts(response.data)
+      } catch (error) {
+        console.error('Error fetching products:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchProducts()
+  }, [selectedCategory])
+
+  {{#hasRedux}}
+  const handleAddToCart = (product{{#isTypeScript}}: Product{{/isTypeScript}}) => {
+    dispatch(addToCart(product))
+  }
+  {{/hasRedux}}
+  {{/hasAxios}}
+
+  return (
+    {{#hasAntd}}
+    <div>
+      <div style={{ marginBottom: 24 }}>
+        <Title level={2}>All Products</Title>
+      </div>
+
+      {/* Filters */}
+      <Card style={{ marginBottom: 24 }}>
+        <Space size="large">
+          <Input
+            placeholder="Search products..."
+            prefix={<SearchOutlined />}
+            style={{ width: 300 }}
+          />
+          <Select
+            defaultValue="all"
+            style={{ width: 200 }}
+            onChange={(value) => setSelectedCategory(value)}
+            options={[
+              { value: 'all', label: 'All Categories' },
+              { value: 'electronics', label: 'Electronics' },
+              { value: "men's clothing", label: "Men's Clothing" },
+              { value: "women's clothing", label: "Women's Clothing" },
+              { value: 'jewelery', label: 'Jewelery' },
+            ]}
+          />
+          <Select
+            defaultValue="default"
+            style={{ width: 150 }}
+            options={[
+              { value: 'default', label: 'Default' },
+              { value: 'price-low', label: 'Price: Low to High' },
+              { value: 'price-high', label: 'Price: High to Low' },
+              { value: 'rating', label: 'Top Rated' },
+            ]}
+          />
+        </Space>
+      </Card>
+
+      {/* Products Grid */}
+      {{#hasAxios}}
+      <Row gutter={[16, 16]}>
+        {products.map((product) => (
+          <Col xs={24} sm={12} md={8} lg={6} key={product.id}>
+            <Card
+              hoverable
+              loading={loading}
+              cover={
+                {{#hasRouter}}
+                <Link to={`/product/${product.id}`}>
+                  <div style={{ 
+                    height: 250, 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center',
+                    padding: 20,
+                    background: '#fff'
+                  }}>
+                    <img
+                      alt={product.title}
+                      src={product.image}
+                      style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }}
+                    />
+                  </div>
+                </Link>
+                {{/hasRouter}}
+                {{^hasRouter}}
+                <div style={{ 
+                  height: 250, 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                  padding: 20,
+                  background: '#fff'
+                }}>
+                  <img
+                    alt={product.title}
+                    src={product.image}
+                    style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }}
+                  />
+                </div>
+                {{/hasRouter}}
+              }
+              actions={[
+                <HeartOutlined key="wishlist" />,
+                {{#hasRedux}}
+                <Button
+                  type="text"
+                  icon={<ShoppingCartOutlined />}
+                  onClick={() => handleAddToCart(product)}
+                >
+                  Add to Cart
+                </Button>,
+                {{/hasRedux}}
+                {{^hasRedux}}
+                <Button type="text" icon={<ShoppingCartOutlined />}>
+                  Add to Cart
+                </Button>,
+                {{/hasRedux}}
+              ]}
+            >
+              <Card.Meta
+                title={
+                  <Text ellipsis={{ tooltip: product.title }}>
+                    {product.title}
+                  </Text>
+                }
+                description={
+                  <Space direction="vertical" style={{ width: '100%' }}>
+                    <Tag color="blue">{product.category}</Tag>
+                    <div>
+                      <StarFilled style={{ color: '#faad14' }} />
+                      <Text style={{ marginLeft: 8 }}>
+                        {product.rating.rate} ({product.rating.count})
+                      </Text>
+                    </div>
+                    <Text strong style={{ fontSize: '20px', color: '#1890ff' }}>
+                      ${product.price.toFixed(2)}
+                    </Text>
+                  </Space>
+                }
+              />
+            </Card>
+          </Col>
+        ))}
+      </Row>
+
+      <div style={{ marginTop: 32, textAlign: 'center' }}>
+        <Pagination defaultCurrent={1} total={50} pageSize={20} />
+      </div>
+      {{/hasAxios}}
+      {{^hasAxios}}
+      <Card>
+        <Text>Enable Axios to display products from API</Text>
+      </Card>
+      {{/hasAxios}}
+    </div>
+    {{/hasAntd}}
+    {{^hasAntd}}
+    <div className="products-page">
+      <h2>All Products</h2>
+      {{#hasAxios}}
+      <div className="products-grid">
+        {products.map(product => (
+          <div key={product.id} className="product-card">
+            <img src={product.image} alt={product.title} />
+            <h3>{product.title}</h3>
+            <p>${product.price}</p>
+            {{#hasRedux}}
+            <button onClick={() => handleAddToCart(product)}>Add to Cart</button>
+            {{/hasRedux}}
+          </div>
+        ))}
+      </div>
+      {{/hasAxios}}
+    </div>
+    {{/hasAntd}}
+  )
+}
+
+export default Products

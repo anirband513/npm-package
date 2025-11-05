@@ -1,0 +1,207 @@
+import { useState } from 'react'
+{{#hasAntd}}
+import { Layout, Menu, Typography, Avatar, Badge, Dropdown, Space } from 'antd'
+import {
+  DashboardOutlined,
+  UserOutlined,
+  ShoppingOutlined,
+  BarChartOutlined,
+  SettingOutlined,
+  BellOutlined,
+  LogoutOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+} from '@ant-design/icons'
+{{/hasAntd}}
+{{#hasRouter}}
+import { Routes, Route, Link, useLocation } from 'react-router-dom'
+import Dashboard from './pages/Dashboard'
+import Users from './pages/Users'
+import Products from './pages/Products'
+import Analytics from './pages/Analytics'
+import Settings from './pages/Settings'
+{{/hasRouter}}
+{{#hasScss}}
+import './index.scss'
+{{/hasScss}}
+{{^hasScss}}
+import './index.css'
+{{/hasScss}}
+
+{{#hasAntd}}
+const { Header, Sider, Content } = Layout
+const { Title, Text } = Typography
+{{/hasAntd}}
+
+{{#isTypeScript}}
+function App(): JSX.Element {
+{{/isTypeScript}}
+{{^isTypeScript}}
+function App() {
+{{/isTypeScript}}
+  const [collapsed, setCollapsed] = useState(false)
+  {{#hasRouter}}
+  const location = useLocation()
+  {{/hasRouter}}
+
+  const userMenuItems = [
+    {
+      key: 'profile',
+      icon: <UserOutlined />,
+      label: 'Profile',
+    },
+    {
+      key: 'settings',
+      icon: <SettingOutlined />,
+      label: 'Settings',
+    },
+    {
+      type: 'divider',
+    },
+    {
+      key: 'logout',
+      icon: <LogoutOutlined />,
+      label: 'Logout',
+      danger: true,
+    },
+  ]
+
+  {{#hasRouter}}
+  return (
+    {{#hasAntd}}
+    <Layout style={{ minHeight: '100vh' }}>
+      <Sider 
+        collapsible 
+        collapsed={collapsed} 
+        onCollapse={setCollapsed}
+        style={{
+          background: '#001529',
+        }}
+      >
+        <div style={{ 
+          height: '64px', 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'center',
+          borderBottom: '1px solid rgba(255,255,255,0.1)'
+        }}>
+          <Title level={4} style={{ color: 'white', margin: 0 }}>
+            {collapsed ? 'AD' : 'Admin'}
+          </Title>
+        </div>
+        <Menu
+          theme="dark"
+          mode="inline"
+          selectedKeys={[location.pathname]}
+          items={[
+            {
+              key: '/',
+              icon: <DashboardOutlined />,
+              label: <Link to="/">Dashboard</Link>,
+            },
+            {
+              key: '/users',
+              icon: <UserOutlined />,
+              label: <Link to="/users">Users</Link>,
+            },
+            {
+              key: '/products',
+              icon: <ShoppingOutlined />,
+              label: <Link to="/products">Products</Link>,
+            },
+            {
+              key: '/analytics',
+              icon: <BarChartOutlined />,
+              label: <Link to="/analytics">Analytics</Link>,
+            },
+            {
+              key: '/settings',
+              icon: <SettingOutlined />,
+              label: <Link to="/settings">Settings</Link>,
+            },
+          ]}
+        />
+      </Sider>
+      <Layout>
+        <Header style={{ 
+          background: '#fff', 
+          padding: '0 24px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          boxShadow: '0 1px 4px rgba(0,21,41,0.08)'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+              style: { fontSize: '18px', cursor: 'pointer' },
+              onClick: () => setCollapsed(!collapsed),
+            })}
+            <Title level={4} style={{ margin: 0 }}>
+              {{projectName}}
+            </Title>
+          </div>
+          <Space size="large">
+            <Badge count={5} size="small">
+              <BellOutlined style={{ fontSize: '18px', cursor: 'pointer' }} />
+            </Badge>
+            <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
+              <Space style={{ cursor: 'pointer' }}>
+                <Avatar icon={<UserOutlined />} />
+                <Text>Admin User</Text>
+              </Space>
+            </Dropdown>
+          </Space>
+        </Header>
+        <Content style={{ margin: '24px 16px', padding: 24, background: '#f0f2f5', minHeight: 280 }}>
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/users" element={<Users />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/analytics" element={<Analytics />} />
+            <Route path="/settings" element={<Settings />} />
+          </Routes>
+        </Content>
+      </Layout>
+    </Layout>
+    {{/hasAntd}}
+    {{^hasAntd}}
+    <div className="admin-layout">
+      <aside className="sidebar">
+        <h2>{{projectName}}</h2>
+        <nav>
+          <Link to="/">Dashboard</Link>
+          <Link to="/users">Users</Link>
+          <Link to="/products">Products</Link>
+          <Link to="/analytics">Analytics</Link>
+          <Link to="/settings">Settings</Link>
+        </nav>
+      </aside>
+      <div className="main-content">
+        <header className="admin-header">
+          <h1>Admin Dashboard</h1>
+        </header>
+        <main className="content">
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/users" element={<Users />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/analytics" element={<Analytics />} />
+            <Route path="/settings" element={<Settings />} />
+          </Routes>
+        </main>
+      </div>
+    </div>
+    {{/hasAntd}}
+  )
+  {{/hasRouter}}
+  {{^hasRouter}}
+  return (
+    <div>
+      <h1>Admin Dashboard</h1>
+      <p>Please enable React Router for the full admin experience</p>
+    </div>
+  )
+  {{/hasRouter}}
+}
+
+export default App

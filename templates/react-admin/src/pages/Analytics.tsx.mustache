@@ -1,0 +1,143 @@
+{{#hasAntd}}
+import { Card, Row, Col, Statistic, Typography, Progress, Space } from 'antd'
+import { ArrowUpOutlined, ArrowDownOutlined, BarChartOutlined } from '@ant-design/icons'
+{{/hasAntd}}
+
+{{#hasAntd}}
+const { Title, Text } = Typography
+{{/hasAntd}}
+
+{{#isTypeScript}}
+function Analytics(): JSX.Element {
+{{/isTypeScript}}
+{{^isTypeScript}}
+function Analytics() {
+{{/isTypeScript}}
+  return (
+    {{#hasAntd}}
+    <div>
+      <Title level={2}><BarChartOutlined /> Analytics & Reports</Title>
+      
+      <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
+        <Col xs={24} md={12} lg={6}>
+          <Card>
+            <Statistic
+              title="Page Views"
+              value={11893}
+              suffix="/ month"
+              prefix={<ArrowUpOutlined style={{ color: '#3f8600' }} />}
+              valueStyle={{ color: '#3f8600' }}
+            />
+          </Card>
+        </Col>
+        <Col xs={24} md={12} lg={6}>
+          <Card>
+            <Statistic
+              title="Bounce Rate"
+              value={23.5}
+              suffix="%"
+              prefix={<ArrowDownOutlined style={{ color: '#cf1322' }} />}
+              valueStyle={{ color: '#cf1322' }}
+            />
+          </Card>
+        </Col>
+        <Col xs={24} md={12} lg={6}>
+          <Card>
+            <Statistic
+              title="Session Duration"
+              value={3.45}
+              suffix="min"
+              valueStyle={{ color: '#1890ff' }}
+            />
+          </Card>
+        </Col>
+        <Col xs={24} md={12} lg={6}>
+          <Card>
+            <Statistic
+              title="New Users"
+              value={432}
+              suffix="/ week"
+              prefix={<ArrowUpOutlined style={{ color: '#3f8600' }} />}
+              valueStyle={{ color: '#3f8600' }}
+            />
+          </Card>
+        </Col>
+      </Row>
+
+      <Row gutter={[16, 16]}>
+        <Col xs={24} lg={12}>
+          <Card title="Traffic Sources">
+            <Space direction="vertical" style={{ width: '100%' }} size="large">
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                  <Text>Direct</Text>
+                  <Text strong>45%</Text>
+                </div>
+                <Progress percent={45} strokeColor="#52c41a" />
+              </div>
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                  <Text>Organic Search</Text>
+                  <Text strong>35%</Text>
+                </div>
+                <Progress percent={35} strokeColor="#1890ff" />
+              </div>
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                  <Text>Social Media</Text>
+                  <Text strong>{20}%</Text>
+                </div>
+                <Progress percent={20} strokeColor="#722ed1" />
+              </div>
+            </Space>
+          </Card>
+        </Col>
+        <Col xs={24} lg={12}>
+          <Card title="Conversion Funnel">
+            <Space direction="vertical" style={{ width: '100%' }} size="large">
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                  <Text>Visitors</Text>
+                  <Text strong>10,000</Text>
+                </div>
+                <Progress percent={100} strokeColor="#1890ff" showInfo={false} />
+              </div>
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                  <Text>Product Views</Text>
+                  <Text strong>6,500</Text>
+                </div>
+                <Progress percent={65} strokeColor="#1890ff" showInfo={false} />
+              </div>
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                  <Text>Add to Cart</Text>
+                  <Text strong>2,100</Text>
+                </div>
+                <Progress percent={21} strokeColor="#1890ff" showInfo={false} />
+              </div>
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                  <Text>Purchases</Text>
+                  <Text strong>450</Text>
+                </div>
+                <Progress percent={4.5} strokeColor="#52c41a" showInfo={false} />
+              </div>
+            </Space>
+          </Card>
+        </Col>
+      </Row>
+    </div>
+    {{/hasAntd}}
+    {{^hasAntd}}
+    <div className="analytics-page">
+      <h2>Analytics & Reports</h2>
+      <div className="analytics-content">
+        <p>Analytics charts and reports will be displayed here</p>
+      </div>
+    </div>
+    {{/hasAntd}}
+  )
+}
+
+export default Analytics

@@ -1,0 +1,190 @@
+import { useState } from 'react'
+{{#hasAntd}}
+import { Layout, Menu, Badge, Button, Drawer, Typography, Space, Avatar, Dropdown } from 'antd'
+import {
+  ShoppingCartOutlined,
+  HeartOutlined,
+  UserOutlined,
+  ShoppingOutlined,
+  HomeOutlined,
+  TagsOutlined,
+  LogoutOutlined,
+  LoginOutlined,
+} from '@ant-design/icons'
+{{/hasAntd}}
+{{#hasRouter}}
+import { Routes, Route, Link, useLocation } from 'react-router-dom'
+import Home from './pages/Home'
+import Products from './pages/Products'
+import ProductDetail from './pages/ProductDetail'
+import Cart from './pages/Cart'
+import Checkout from './pages/Checkout'
+{{/hasRouter}}
+{{#hasRedux}}
+import { useSelector } from 'react-redux'
+{{/hasRedux}}
+{{#hasScss}}
+import './index.scss'
+{{/hasScss}}
+{{^hasScss}}
+import './index.css'
+{{/hasScss}}
+
+{{#hasAntd}}
+const { Header, Content, Footer } = Layout
+const { Title, Text } = Typography
+{{/hasAntd}}
+
+{{#isTypeScript}}
+function App(): JSX.Element {
+{{/isTypeScript}}
+{{^isTypeScript}}
+function App() {
+{{/isTypeScript}}
+  const [cartDrawerVisible, setCartDrawerVisible] = useState(false)
+  {{#hasRouter}}
+  const location = useLocation()
+  {{/hasRouter}}
+  {{#hasRedux}}
+  const cartItems = useSelector((state{{#isTypeScript}}: any{{/isTypeScript}}) => state.cart?.items || [])
+  const cartCount = cartItems.reduce((total{{#isTypeScript}}: number{{/isTypeScript}}, item{{#isTypeScript}}: any{{/isTypeScript}}) => total + item.quantity, 0)
+  {{/hasRedux}}
+  {{^hasRedux}}
+  const [cartCount] = useState(0)
+  {{/hasRedux}}
+
+  const userMenuItems = [
+    {
+      key: 'profile',
+      icon: <UserOutlined />,
+      label: 'My Profile',
+    },
+    {
+      key: 'orders',
+      icon: <ShoppingOutlined />,
+      label: 'My Orders',
+    },
+    {
+      key: 'wishlist',
+      icon: <HeartOutlined />,
+      label: 'Wishlist',
+    },
+    {
+      type: 'divider',
+    },
+    {
+      key: 'logout',
+      icon: <LogoutOutlined />,
+      label: 'Logout',
+      danger: true,
+    },
+  ]
+
+  {{#hasRouter}}
+  return (
+    {{#hasAntd}}
+    <Layout style={{ minHeight: '100vh' }}>
+      <Header style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 1000,
+        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        background: '#fff',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+        padding: '0 24px',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+          <Title level={3} style={{ margin: 0, color: '#1890ff' }}>
+            <ShoppingOutlined /> {{projectName}}
+          </Title>
+          <Menu
+            mode="horizontal"
+            selectedKeys={[location.pathname]}
+            style={{ border: 'none', flex: 1, minWidth: 400 }}
+            items={[
+              {
+                key: '/',
+                icon: <HomeOutlined />,
+                label: <Link to="/">Home</Link>,
+              },
+              {
+                key: '/products',
+                icon: <TagsOutlined />,
+                label: <Link to="/products">Products</Link>,
+              },
+            ]}
+          />
+        </div>
+        <Space size="large">
+          <Badge count={0} showZero={false}>
+            <HeartOutlined style={{ fontSize: '20px', cursor: 'pointer' }} />
+          </Badge>
+          <Badge count={cartCount} showZero>
+            <Link to="/cart">
+              <ShoppingCartOutlined style={{ fontSize: '20px', cursor: 'pointer' }} />
+            </Link>
+          </Badge>
+          <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
+            <Space style={{ cursor: 'pointer' }}>
+              <Avatar icon={<UserOutlined />} />
+              <Text>Guest</Text>
+            </Space>
+          </Dropdown>
+        </Space>
+      </Header>
+      
+      <Content style={{ padding: '24px', background: '#f0f2f5', minHeight: 'calc(100vh - 134px)' }}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
+        </Routes>
+      </Content>
+      
+      <Footer style={{ textAlign: 'center', background: '#001529', color: 'white' }}>
+        {{projectName}} ©{new Date().getFullYear()} - Built with Vite + React {{#isTypeScript}}+ TypeScript{{/isTypeScript}}
+      </Footer>
+    </Layout>
+    {{/hasAntd}}
+    {{^hasAntd}}
+    <div className="ecommerce-layout">
+      <header className="ecommerce-header">
+        <h1>{{projectName}}</h1>
+        <nav>
+          <Link to="/">Home</Link>
+          <Link to="/products">Products</Link>
+          <Link to="/cart">Cart ({cartCount})</Link>
+        </nav>
+      </header>
+      <main className="ecommerce-content">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
+        </Routes>
+      </main>
+      <footer className="ecommerce-footer">
+        <p>{{projectName}} ©{new Date().getFullYear()}</p>
+      </footer>
+    </div>
+    {{/hasAntd}}
+  )
+  {{/hasRouter}}
+  {{^hasRouter}}
+  return (
+    <div>
+      <h1>{{projectName}} E-commerce</h1>
+      <p>Please enable React Router for the full e-commerce experience</p>
+    </div>
+  )
+  {{/hasRouter}}
+}
+
+export default App

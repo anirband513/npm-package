@@ -1,0 +1,160 @@
+{{#hasAntd}}
+import { Card, Table, Button, Space, Tag, Input, Select, Typography, Image } from 'antd'
+import { SearchOutlined, PlusOutlined, EditOutlined, DeleteOutlined, ShoppingOutlined } from '@ant-design/icons'
+{{/hasAntd}}
+{{#hasAxios}}
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+{{/hasAxios}}
+
+{{#hasAntd}}
+const { Title, Text } = Typography
+{{/hasAntd}}
+
+{{#isTypeScript}}
+{{#hasAxios}}
+interface Product {
+  id: number
+  title: string
+  price: number
+  category: string
+  image: string
+  description: string
+}
+{{/hasAxios}}
+
+function Products(): JSX.Element {
+{{/isTypeScript}}
+{{^isTypeScript}}
+function Products() {
+{{/isTypeScript}}
+  {{#hasAxios}}
+  const [products, setProducts] = useState{{#isTypeScript}}<Product[]>{{/isTypeScript}}([])
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true)
+      try {
+        const response = await axios.get('https://fakestoreapi.com/products')
+        setProducts(response.data)
+      } catch (error) {
+        console.error('Error fetching products:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchProducts()
+  }, [])
+  {{/hasAxios}}
+
+  {{#hasAntd}}
+  const columns = [
+    {
+      title: 'Image',
+      dataIndex: 'image',
+      key: 'image',
+      render: (image{{#isTypeScript}}: string{{/isTypeScript}}) => (
+        <Image src={image} width={50} height={50} style={{ objectFit: 'contain' }} />
+      ),
+    },
+    {
+      title: 'Product',
+      dataIndex: 'title',
+      key: 'title',
+      render: (title{{#isTypeScript}}: string{{/isTypeScript}}) => <Text strong>{title.substring(0, 50)}...</Text>,
+    },
+    {
+      title: 'Category',
+      dataIndex: 'category',
+      key: 'category',
+      render: (category{{#isTypeScript}}: string{{/isTypeScript}}) => <Tag color="blue">{category}</Tag>,
+    },
+    {
+      title: 'Price',
+      dataIndex: 'price',
+      key: 'price',
+      render: (price{{#isTypeScript}}: number{{/isTypeScript}}) => <Text strong>${price.toFixed(2)}</Text>,
+    },
+    {
+      title: 'Stock',
+      key: 'stock',
+      render: () => <Tag color="green">In Stock</Tag>,
+    },
+    {
+      title: 'Actions',
+      key: 'actions',
+      render: () => (
+        <Space>
+          <Button type="link" icon={<EditOutlined />} size="small">Edit</Button>
+          <Button type="link" danger icon={<DeleteOutlined />} size="small">Delete</Button>
+        </Space>
+      ),
+    },
+  ]
+  {{/hasAntd}}
+
+  return (
+    {{#hasAntd}}
+    <div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
+        <Title level={2}><ShoppingOutlined /> Products Management</Title>
+        <Button type="primary" icon={<PlusOutlined />}>Add Product</Button>
+      </div>
+      
+      <Card>
+        <Space style={{ marginBottom: 16 }}>
+          <Input
+            placeholder="Search products..."
+            prefix={<SearchOutlined />}
+            style={{ width: 300 }}
+          />
+          <Select
+            placeholder="Category"
+            style={{ width: 150 }}
+            options={[
+              { value: 'all', label: 'All Categories' },
+              { value: 'electronics', label: 'Electronics' },
+              { value: 'clothing', label: 'Clothing' },
+              { value: 'jewelery', label: 'Jewelery' },
+            ]}
+          />
+        </Space>
+        {{#hasAxios}}
+        <Table
+          columns={columns}
+          dataSource={products}
+          rowKey="id"
+          loading={loading}
+          pagination={{ pageSize: 10 }}
+        />
+        {{/hasAxios}}
+        {{^hasAxios}}
+        <p>Enable Axios to fetch and display product data</p>
+        {{/hasAxios}}
+      </Card>
+    </div>
+    {{/hasAntd}}
+    {{^hasAntd}}
+    <div className="products-page">
+      <h2>Products Management</h2>
+      {{#hasAxios}}
+      <div className="products-list">
+        {products.map(product => (
+          <div key={product.id} className="product-item">
+            <img src={product.image} alt={product.title} />
+            <h3>{product.title}</h3>
+            <p>${product.price}</p>
+          </div>
+        ))}
+      </div>
+      {{/hasAxios}}
+      {{^hasAxios}}
+      <p>Enable Axios to fetch and display product data</p>
+      {{/hasAxios}}
+    </div>
+    {{/hasAntd}}
+  )
+}
+
+export default Products

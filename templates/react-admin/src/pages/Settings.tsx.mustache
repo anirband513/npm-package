@@ -1,0 +1,139 @@
+{{#hasAntd}}
+import { Card, Form, Input, Button, Switch, Select, Typography, Space, Divider } from 'antd'
+import { SettingOutlined, SaveOutlined } from '@ant-design/icons'
+{{/hasAntd}}
+
+{{#hasAntd}}
+const { Title, Text } = Typography
+{{/hasAntd}}
+
+{{#isTypeScript}}
+function Settings(): JSX.Element {
+{{/isTypeScript}}
+{{^isTypeScript}}
+function Settings() {
+{{/isTypeScript}}
+  const onFinish = (values{{#isTypeScript}}: any{{/isTypeScript}}) => {
+    console.log('Settings saved:', values)
+  }
+
+  return (
+    {{#hasAntd}}
+    <div>
+      <Title level={2}><SettingOutlined /> Settings</Title>
+      
+      <Card title="General Settings" style={{ marginBottom: 16 }}>
+        <Form
+          layout="vertical"
+          onFinish={onFinish}
+          initialValues={{
+            siteName: '{{projectName}}',
+            siteUrl: 'https://example.com',
+            email: 'admin@example.com',
+          }}
+        >
+          <Form.Item label="Site Name" name="siteName">
+            <Input placeholder="Enter site name" />
+          </Form.Item>
+          <Form.Item label="Site URL" name="siteUrl">
+            <Input placeholder="Enter site URL" />
+          </Form.Item>
+          <Form.Item label="Admin Email" name="email">
+            <Input placeholder="Enter admin email" />
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" icon={<SaveOutlined />}>
+              Save Settings
+            </Button>
+          </Form.Item>
+        </Form>
+      </Card>
+
+      <Card title="Notification Preferences" style={{ marginBottom: 16 }}>
+        <Form layout="vertical">
+          <Space direction="vertical" style={{ width: '100%' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <Text strong>Email Notifications</Text>
+                <br />
+                <Text type="secondary">Receive email notifications for new orders</Text>
+              </div>
+              <Switch defaultChecked />
+            </div>
+            <Divider />
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <Text strong>SMS Notifications</Text>
+                <br />
+                <Text type="secondary">Receive SMS for urgent updates</Text>
+              </div>
+              <Switch />
+            </div>
+            <Divider />
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <Text strong>Push Notifications</Text>
+                <br />
+                <Text type="secondary">Receive browser push notifications</Text>
+              </div>
+              <Switch defaultChecked />
+            </div>
+          </Space>
+        </Form>
+      </Card>
+
+      <Card title="Regional Settings">
+        <Form layout="vertical">
+          <Form.Item label="Language" name="language" initialValue="en">
+            <Select>
+              <Select.Option value="en">English</Select.Option>
+              <Select.Option value="es">Spanish</Select.Option>
+              <Select.Option value="fr">French</Select.Option>
+              <Select.Option value="de">German</Select.Option>
+            </Select>
+          </Form.Item>
+          <Form.Item label="Timezone" name="timezone" initialValue="UTC">
+            <Select>
+              <Select.Option value="UTC">UTC</Select.Option>
+              <Select.Option value="EST">Eastern Time</Select.Option>
+              <Select.Option value="PST">Pacific Time</Select.Option>
+              <Select.Option value="GMT">GMT</Select.Option>
+            </Select>
+          </Form.Item>
+          <Form.Item label="Currency" name="currency" initialValue="USD">
+            <Select>
+              <Select.Option value="USD">USD ($)</Select.Option>
+              <Select.Option value="EUR">EUR (€)</Select.Option>
+              <Select.Option value="GBP">GBP (£)</Select.Option>
+              <Select.Option value="JPY">JPY (¥)</Select.Option>
+            </Select>
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" icon={<SaveOutlined />}>
+              Save Settings
+            </Button>
+          </Form.Item>
+        </Form>
+      </Card>
+    </div>
+    {{/hasAntd}}
+    {{^hasAntd}}
+    <div className="settings-page">
+      <h2>Settings</h2>
+      <form className="settings-form">
+        <div className="form-group">
+          <label>Site Name</label>
+          <input type="text" defaultValue="{{projectName}}" />
+        </div>
+        <div className="form-group">
+          <label>Admin Email</label>
+          <input type="email" defaultValue="admin@example.com" />
+        </div>
+        <button type="submit">Save Settings</button>
+      </form>
+    </div>
+    {{/hasAntd}}
+  )
+}
+
+export default Settings

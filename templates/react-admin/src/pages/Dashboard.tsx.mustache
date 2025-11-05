@@ -1,0 +1,268 @@
+{{#hasAntd}}
+import { Card, Row, Col, Statistic, Table, Tag, Progress, Typography, Space, Button } from 'antd'
+import {
+  UserOutlined,
+  ShoppingCartOutlined,
+  DollarOutlined,
+  RiseOutlined,
+  ArrowUpOutlined,
+  ArrowDownOutlined,
+  EyeOutlined,
+  EditOutlined,
+  DeleteOutlined,
+} from '@ant-design/icons'
+{{/hasAntd}}
+{{#hasRedux}}
+import { useSelector } from 'react-redux'
+{{/hasRedux}}
+{{#hasAxios}}
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+{{/hasAxios}}
+
+{{#hasAntd}}
+const { Title, Text } = Typography
+{{/hasAntd}}
+
+{{#isTypeScript}}
+{{#hasAxios}}
+interface Product {
+  id: number
+  title: string
+  price: number
+  category: string
+}
+{{/hasAxios}}
+
+function Dashboard(): JSX.Element {
+{{/isTypeScript}}
+{{^isTypeScript}}
+function Dashboard() {
+{{/isTypeScript}}
+  {{#hasAxios}}
+  const [products, setProducts] = useState{{#isTypeScript}}<Product[]>{{/isTypeScript}}([])
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true)
+      try {
+        const response = await axios.get('https://fakestoreapi.com/products')
+        setProducts(response.data.slice(0, 5))
+      } catch (error) {
+        console.error('Error fetching products:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchProducts()
+  }, [])
+  {{/hasAxios}}
+
+  {{#hasAntd}}
+  const columns = [
+    {
+      title: 'Product',
+      dataIndex: 'title',
+      key: 'title',
+      render: (text{{#isTypeScript}}: string{{/isTypeScript}}) => <Text strong>{text}</Text>,
+    },
+    {
+      title: 'Category',
+      dataIndex: 'category',
+      key: 'category',
+      render: (category{{#isTypeScript}}: string{{/isTypeScript}}) => (
+        <Tag color="blue">{category}</Tag>
+      ),
+    },
+    {
+      title: 'Price',
+      dataIndex: 'price',
+      key: 'price',
+      render: (price{{#isTypeScript}}: number{{/isTypeScript}}) => `$${price.toFixed(2)}`,
+    },
+    {
+      title: 'Actions',
+      key: 'actions',
+      render: () => (
+        <Space>
+          <Button type="link" icon={<EyeOutlined />} size="small">View</Button>
+          <Button type="link" icon={<EditOutlined />} size="small">Edit</Button>
+          <Button type="link" danger icon={<DeleteOutlined />} size="small">Delete</Button>
+        </Space>
+      ),
+    },
+  ]
+  {{/hasAntd}}
+
+  return (
+    {{#hasAntd}}
+    <div>
+      <Title level={2} style={{ marginBottom: 24 }}>Dashboard Overview</Title>
+      
+      {/* Statistics Cards */}
+      <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
+        <Col xs={24} sm={12} lg={6}>
+          <Card>
+            <Statistic
+              title="Total Users"
+              value={1128}
+              prefix={<UserOutlined />}
+              suffix={<Tag color="green"><ArrowUpOutlined /> 12%</Tag>}
+              valueStyle={{ color: '#3f8600' }}
+            />
+          </Card>
+        </Col>
+        <Col xs={24} sm={12} lg={6}>
+          <Card>
+            <Statistic
+              title="Total Orders"
+              value={2543}
+              prefix={<ShoppingCartOutlined />}
+              suffix={<Tag color="green"><ArrowUpOutlined /> 8%</Tag>}
+              valueStyle={{ color: '#3f8600' }}
+            />
+          </Card>
+        </Col>
+        <Col xs={24} sm={12} lg={6}>
+          <Card>
+            <Statistic
+              title="Revenue"
+              value={45231}
+              prefix={<DollarOutlined />}
+              precision={2}
+              suffix={<Tag color="red"><ArrowDownOutlined /> 3%</Tag>}
+              valueStyle={{ color: '#cf1322' }}
+            />
+          </Card>
+        </Col>
+        <Col xs={24} sm={12} lg={6}>
+          <Card>
+            <Statistic
+              title="Growth"
+              value={28.5}
+              prefix={<RiseOutlined />}
+              suffix="%"
+              valueStyle={{ color: '#3f8600' }}
+            />
+          </Card>
+        </Col>
+      </Row>
+
+      {/* Performance Metrics */}
+      <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
+        <Col xs={24} lg={12}>
+          <Card title="Sales Performance" extra={<a href="#">View Details</a>}>
+            <Space direction="vertical" style={{ width: '100%' }} size="large">
+              <div>
+                <Text>Monthly Target</Text>
+                <Progress percent={75} status="active" />
+              </div>
+              <div>
+                <Text>Quarterly Target</Text>
+                <Progress percent={60} status="active" strokeColor="#52c41a" />
+              </div>
+              <div>
+                <Text>Annual Target</Text>
+                <Progress percent={45} status="active" strokeColor="#1890ff" />
+              </div>
+            </Space>
+          </Card>
+        </Col>
+        <Col xs={24} lg={12}>
+          <Card title="Quick Stats">
+            <Row gutter={16}>
+              <Col span={12}>
+                <Statistic
+                  title="Active Users"
+                  value={893}
+                  prefix={<UserOutlined />}
+                  valueStyle={{ fontSize: '24px' }}
+                />
+              </Col>
+              <Col span={12}>
+                <Statistic
+                  title="Pending Orders"
+                  value={45}
+                  prefix={<ShoppingCartOutlined />}
+                  valueStyle={{ fontSize: '24px', color: '#faad14' }}
+                />
+              </Col>
+            </Row>
+            <Row gutter={16} style={{ marginTop: 16 }}>
+              <Col span={12}>
+                <Statistic
+                  title="Conversion Rate"
+                  value={3.8}
+                  suffix="%"
+                  valueStyle={{ fontSize: '24px', color: '#52c41a' }}
+                />
+              </Col>
+              <Col span={12}>
+                <Statistic
+                  title="Avg. Order Value"
+                  value={125}
+                  prefix="$"
+                  valueStyle={{ fontSize: '24px' }}
+                />
+              </Col>
+            </Row>
+          </Card>
+        </Col>
+      </Row>
+
+      {/* Recent Products Table */}
+      {{#hasAxios}}
+      <Card title="Recent Products" extra={<a href="#">View All</a>}>
+        <Table
+          columns={columns}
+          dataSource={products}
+          rowKey="id"
+          loading={loading}
+          pagination={false}
+        />
+      </Card>
+      {{/hasAxios}}
+      {{^hasAxios}}
+      <Card title="Recent Products" extra={<a href="#">View All</a>}>
+        <Text type="secondary">Enable Axios to fetch real product data</Text>
+      </Card>
+      {{/hasAxios}}
+    </div>
+    {{/hasAntd}}
+    {{^hasAntd}}
+    <div className="dashboard">
+      <h2>Dashboard Overview</h2>
+      
+      <div className="stats-grid">
+        <div className="stat-card">
+          <h3>Total Users</h3>
+          <p className="stat-value">1,128</p>
+          <span className="stat-change positive">+12%</span>
+        </div>
+        <div className="stat-card">
+          <h3>Total Orders</h3>
+          <p className="stat-value">2,543</p>
+          <span className="stat-change positive">+8%</span>
+        </div>
+        <div className="stat-card">
+          <h3>Revenue</h3>
+          <p className="stat-value">$45,231</p>
+          <span className="stat-change negative">-3%</span>
+        </div>
+        <div className="stat-card">
+          <h3>Growth</h3>
+          <p className="stat-value">28.5%</p>
+        </div>
+      </div>
+
+      <div className="recent-activity">
+        <h3>Recent Activity</h3>
+        <p>Dashboard content goes here...</p>
+      </div>
+    </div>
+    {{/hasAntd}}
+  )
+}
+
+export default Dashboard

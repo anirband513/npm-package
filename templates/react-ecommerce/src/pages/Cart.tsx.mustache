@@ -1,0 +1,241 @@
+{{#hasAntd}}
+import { Card, Table, Button, InputNumber, Typography, Space, Empty, Divider } from 'antd'
+import { DeleteOutlined, ShoppingOutlined } from '@ant-design/icons'
+{{/hasAntd}}
+{{#hasRedux}}
+import { useSelector, useDispatch } from 'react-redux'
+import { removeFromCart, updateQuantity, clearCart } from '../store/cartSlice'
+{{/hasRedux}}
+{{#hasRouter}}
+import { Link, useNavigate } from 'react-router-dom'
+{{/hasRouter}}
+
+{{#hasAntd}}
+const { Title, Text } = Typography
+{{/hasAntd}}
+
+{{#isTypeScript}}
+function Cart(): JSX.Element {
+{{/isTypeScript}}
+{{^isTypeScript}}
+function Cart() {
+{{/isTypeScript}}
+  {{#hasRedux}}
+  const cartItems = useSelector((state{{#isTypeScript}}: any{{/isTypeScript}}) => state.cart?.items || [])
+  const dispatch = useDispatch()
+  {{/hasRedux}}
+  {{#hasRouter}}
+  const navigate = useNavigate()
+  {{/hasRouter}}
+
+  {{#hasRedux}}
+  const subtotal = cartItems.reduce(
+    (total{{#isTypeScript}}: number{{/isTypeScript}}, item{{#isTypeScript}}: any{{/isTypeScript}}) => total + item.price * item.quantity,
+    0
+  )
+  const tax = subtotal * 0.1
+  const shipping = subtotal > 0 ? 10 : 0
+  const total = subtotal + tax + shipping
+
+  const handleRemove = (id{{#isTypeScript}}: number{{/isTypeScript}}) => {
+    dispatch(removeFromCart(id))
+  }
+
+  const handleQuantityChange = (id{{#isTypeScript}}: number{{/isTypeScript}}, quantity{{#isTypeScript}}: number{{/isTypeScript}}) => {
+    dispatch(updateQuantity({ id, quantity }))
+  }
+
+  const handleClearCart = () => {
+    dispatch(clearCart())
+  }
+  {{/hasRedux}}
+
+  {{#hasAntd}}
+  {{#hasRedux}}
+  const columns = [
+    {
+      title: 'Product',
+      dataIndex: 'title',
+      key: 'title',
+      render: (title{{#isTypeScript}}: string{{/isTypeScript}}, record{{#isTypeScript}}: any{{/isTypeScript}}) => (
+        <Space>
+          <img
+            src={record.image}
+            alt={title}
+            style={{ width: 60, height: 60, objectFit: 'contain' }}
+          />
+          <Text strong>{title.substring(0, 50)}</Text>
+        </Space>
+      ),
+    },
+    {
+      title: 'Price',
+      dataIndex: 'price',
+      key: 'price',
+      render: (price{{#isTypeScript}}: number{{/isTypeScript}}) => <Text>${price.toFixed(2)}</Text>,
+    },
+    {
+      title: 'Quantity',
+      dataIndex: 'quantity',
+      key: 'quantity',
+      render: (quantity{{#isTypeScript}}: number{{/isTypeScript}}, record{{#isTypeScript}}: any{{/isTypeScript}}) => (
+        <InputNumber
+          min={1}
+          max={10}
+          value={quantity}
+          onChange={(value) => handleQuantityChange(record.id, value || 1)}
+        />
+      ),
+    },
+    {
+      title: 'Total',
+      key: 'total',
+      render: (record{{#isTypeScript}}: any{{/isTypeScript}}) => (
+        <Text strong>${(record.price * record.quantity).toFixed(2)}</Text>
+      ),
+    },
+    {
+      title: 'Actions',
+      key: 'actions',
+      render: (record{{#isTypeScript}}: any{{/isTypeScript}}) => (
+        <Button
+          type="link"
+          danger
+          icon={<DeleteOutlined />}
+          onClick={() => handleRemove(record.id)}
+        >
+          Remove
+        </Button>
+      ),
+    },
+  ]
+
+  if (cartItems.length === 0) {
+    return (
+      <Card>
+        <Empty
+          image={Empty.PRESENTED_IMAGE_SIMPLE}
+          description="Your cart is empty"
+        >
+          {{#hasRouter}}
+          <Link to="/products">
+            <Button type="primary" icon={<ShoppingOutlined />}>
+              Start Shopping
+            </Button>
+          </Link>
+          {{/hasRouter}}
+        </Empty>
+      </Card>
+    )
+  }
+  {{/hasRedux}}
+
+  return (
+    <div>
+      <Title level={2}>Shopping Cart</Title>
+      
+      {{#hasRedux}}
+      <Card>
+        <Table
+          columns={columns}
+          dataSource={cartItems}
+          rowKey="id"
+          pagination={false}
+          footer={() => (
+            <div style={{ textAlign: 'right' }}>
+              <Button danger onClick={handleClearCart}>
+                Clear Cart
+              </Button>
+            </div>
+          )}
+        />
+      </Card>
+
+      <Card style={{ marginTop: 16 }}>
+        <div style={{ maxWidth: 400, marginLeft: 'auto' }}>
+          <Space direction="vertical" style={{ width: '100%' }} size="middle">
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Text>Subtotal:</Text>
+              <Text strong>${subtotal.toFixed(2)}</Text>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Text>Tax (10%):</Text>
+              <Text strong>${tax.toFixed(2)}</Text>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Text>Shipping:</Text>
+              <Text strong>${shipping.toFixed(2)}</Text>
+            </div>
+            <Divider style={{ margin: '8px 0' }} />
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Title level={4} style={{ margin: 0 }}>Total:</Title>
+              <Title level={4} style={{ margin: 0, color: '#1890ff' }}>
+                ${total.toFixed(2)}
+              </Title>
+            </div>
+            {{#hasRouter}}
+            <Button
+              type="primary"
+              size="large"
+              block
+              onClick={() => navigate('/checkout')}
+            >
+              Proceed to Checkout
+            </Button>
+            {{/hasRouter}}
+          </Space>
+        </div>
+      </Card>
+      {{/hasRedux}}
+      {{^hasRedux}}
+      <Card>
+        <Text>Enable Redux to manage shopping cart</Text>
+      </Card>
+      {{/hasRedux}}
+    </div>
+    {{/hasAntd}}
+    {{^hasAntd}}
+    <div className="cart-page">
+      <h2>Shopping Cart</h2>
+      {{#hasRedux}}
+      {cartItems.length === 0 ? (
+        <div>
+          <p>Your cart is empty</p>
+          {{#hasRouter}}
+          <Link to="/products">
+            <button>Start Shopping</button>
+          </Link>
+          {{/hasRouter}}
+        </div>
+      ) : (
+        <div>
+          <div className="cart-items">
+            {cartItems.map((item{{#isTypeScript}}: any{{/isTypeScript}}) => (
+              <div key={item.id} className="cart-item">
+                <img src={item.image} alt={item.title} />
+                <h3>{item.title}</h3>
+                <p>${item.price}</p>
+                <input
+                  type="number"
+                  value={item.quantity}
+                  onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value))}
+                />
+                <button onClick={() => handleRemove(item.id)}>Remove</button>
+              </div>
+            ))}
+          </div>
+          <div className="cart-summary">
+            <p>Total: ${total.toFixed(2)}</p>
+            {{#hasRouter}}
+            <button onClick={() => navigate('/checkout')}>Checkout</button>
+            {{/hasRouter}}
+          </div>
+        </div>
+      )}
+      {{/hasRedux}}
+    </div>
+    {{/hasAntd}}
+  )
+}
+
+export default Cart
