@@ -492,6 +492,7 @@ async function generateTsConfig(projectPath: string, templateData: TemplateData)
       noUnusedLocals: true,
       noUnusedParameters: true,
       noFallthroughCasesInSwitch: true,
+      types: ['react', 'react-dom'],
     },
     include: ['src'],
     references: [{ path: './tsconfig.node.json' }],
