@@ -48,7 +48,9 @@ a {
 
 body {
   margin: 0;
+  {{^hasAntd}}
   @include flex-center;
+  {{/hasAntd}}
   min-width: 320px;
   min-height: 100vh;
 }
@@ -122,8 +124,10 @@ a:hover {
 
 body {
   margin: 0;
+  {{^hasAntd}}
   display: flex;
   place-items: center;
+  {{/hasAntd}}
   min-width: 320px;
   min-height: 100vh;
 }
